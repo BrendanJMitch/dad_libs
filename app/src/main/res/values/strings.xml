@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Dad Libs</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_word_lists">Word Lists</string>
+    <string name="menu_saved_stories">Saved Stories</string>
+    <string name="new_dad_lib">New Dad Lib</string>
+    <string name="template_menu">Template Menu</string>
+    <string name="new_word_list">New Word List</string>
+    <string name="word_list_menu">Word List Menu</string>
+    <string name="new_word">New Word</string>
+</resources>

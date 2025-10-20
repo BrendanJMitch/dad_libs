@@ -1,0 +1,98 @@
+[
+  {
+    "id": 0,
+    "name": "Simple Present (Base Form) Intransitive Verbs",
+    "abbreviation": "Base Intrans",
+    "marker": "base_intrans",
+    "isBuiltin": true,
+    "partOfSpeech": "intransitive_verb"
+  },
+  {
+    "id": 1,
+    "name": "Third Person Singular Present Intransitive Verbs",
+    "abbreviation": "-s Intrans",
+    "marker": "s_intrans",
+    "isBuiltin": true,
+    "partOfSpeech": "intransitive_verb"
+  },
+  {
+    "id": 2,
+    "name": "Simple Past Intransitive Verbs",
+    "abbreviation": "-ed Intrans",
+    "marker": "ed_intrans",
+    "isBuiltin": true,
+    "partOfSpeech": "intransitive_verb"
+  },
+  {
+    "id": 3,
+    "name": "Present Participle Intransitive Verbs",
+    "abbreviation": "-ing Intrans",
+    "marker": "ing_intrans",
+    "isBuiltin": true,
+    "partOfSpeech": "intransitive_verb"
+  },
+  {
+    "id": 4,
+    "name": "Past Participle Intransitive Verbs",
+    "abbreviation": "-en Intrans",
+    "marker": "en_intrans",
+    "isBuiltin": true,
+    "partOfSpeech": "intransitive_verb"
+  },
+  {
+    "id": 5,
+    "name": "Simple Present (Base Form) Transitive Verbs",
+    "abbreviation": "Base Trans",
+    "marker": "base_trans",
+    "isBuiltin": true,
+    "partOfSpeech": "transitive_verb"
+  },
+  {
+    "id": 6,
+    "name": "Third Person Singular Present Transitive Verbs",
+    "abbreviation": "-s Trans",
+    "marker": "s_trans",
+    "isBuiltin": true,
+    "partOfSpeech": "transitive_verb"
+  },
+  {
+    "id": 7,
+    "name": "Simple Past Transitive Verbs",
+    "abbreviation": "-ed Trans",
+    "marker": "ed_trans",
+    "isBuiltin": true,
+    "partOfSpeech": "transitive_verb"
+  },
+  {
+    "id": 8,
+    "name": "Present Participle Transitive Verbs",
+    "abbreviation": "-ing Trans",
+    "marker": "ing_trans",
+    "isBuiltin": true,
+    "partOfSpeech": "transitive_verb"
+  },
+  {
+    "id": 9,
+    "name": "Past Participle Transitive Verbs",
+    "abbreviation": "-en Trans",
+    "marker": "en_trans",
+    "isBuiltin": true,
+    "partOfSpeech": "transitive_verb"
+  },
+  {
+    "id": 10,
+    "name": "Singular Nouns",
+    "abbreviation": "Noun",
+    "marker": "noun",
+    "isBuiltin": true,
+    "partOfSpeech": "noun"
+  },
+  {
+    "id": 11,
+    "name": "Plural Nouns",
+    "abbreviation": "Pl Noun",
+    "marker": "pl_noun",
+    "isBuiltin": true,
+    "partOfSpeech": "noun"
+  }
+]

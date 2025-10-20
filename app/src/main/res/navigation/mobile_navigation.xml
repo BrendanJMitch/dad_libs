@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.brendan.dadlibs.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_readerFragment"
+            app:destination="@id/reader_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_word_lists"
+        android:name="com.brendan.dadlibs.ui.wordlists.WordListsFragment"
+        android:label="@string/menu_word_lists"
+        tools:layout="@layout/fragment_word_lists">
+        <action
+            android:id="@+id/action_wordListsFragment_to_wordsFragment"
+            app:destination="@id/words_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_saved_stories"
+        android:name="com.brendan.dadlibs.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_saved_stories"
+        tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/words_fragment"
+        android:name="com.brendan.dadlibs.ui.words.WordsFragment"
+        android:label="{word_list_name}">
+        <argument
+            android:name="word_list_id"
+            app:argType="long" />
+        <argument
+            android:name="word_list_name"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reader_fragment"
+        android:name="com.brendan.dadlibs.ui.reader.ReaderFragment"
+        android:label="Story Reader">
+        <argument
+            android:name="template_id"
+            app:argType="long" />
+    </fragment>
+</navigation>
