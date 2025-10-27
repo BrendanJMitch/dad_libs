@@ -28,7 +28,7 @@ public class BuilderProvider {
                 return verbBuilder;
             case ADJECTIVE:
                 return adjectiveBuilder;
-            case ADVERB:
+            case OTHER:
                 return adverbBuilder;
         }
         return null; // All cases covered, this is never reached

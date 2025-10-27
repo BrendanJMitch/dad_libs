@@ -16,7 +16,7 @@ public enum Inflection {
     COMPARATIVE("comparative", "ADJ;CMPR"),
     SUPERLATIVE("superlative", "ADJ;SPRL"),
 
-    ADVERB("adverb", "");
+    OTHER("adverb", "");
 
     private final String label;
     private final String unimorphModifiers;
