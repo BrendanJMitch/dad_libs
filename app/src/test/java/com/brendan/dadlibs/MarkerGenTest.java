@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.entity.WordList;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

@@ -2,14 +2,14 @@ package com.brendan.dadlibs;
 
 import static org.junit.Assert.assertEquals;
 
+import androidx.annotation.NonNull;
+
 import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.wordbuilder.NounBuilder;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import androidx.annotation.NonNull;
 
 import java.util.Arrays;
 

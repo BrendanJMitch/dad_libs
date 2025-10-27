@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.brendan.dadlibs.entity.Word;
 import com.brendan.dadlibs.entity.WordList;
 
 import java.util.List;

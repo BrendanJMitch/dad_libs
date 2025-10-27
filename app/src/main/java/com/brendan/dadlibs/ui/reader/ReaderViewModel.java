@@ -6,7 +6,6 @@ import android.os.Looper;
 
 import androidx.lifecycle.AndroidViewModel;
 
-import com.brendan.dadlibs.dao.InflectionDao;
 import com.brendan.dadlibs.dao.TemplateDao;
 import com.brendan.dadlibs.dao.WordDao;
 import com.brendan.dadlibs.dao.WordListDao;
@@ -15,8 +14,6 @@ import com.brendan.dadlibs.engine.DadLibEngine;
 import com.brendan.dadlibs.entity.SavedStory;
 import com.brendan.dadlibs.entity.Template;
 import com.brendan.dadlibs.entity.WordList;
-
-import java.util.List;
 
 public class ReaderViewModel extends AndroidViewModel {
 

@@ -7,10 +7,8 @@ import android.os.Looper;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.brendan.dadlibs.dao.WordDao;
-import com.brendan.dadlibs.dao.WordListDao;
 import com.brendan.dadlibs.db.AppDatabase;
 import com.brendan.dadlibs.entity.Word;
-import com.brendan.dadlibs.entity.WordList;
 
 import java.util.List;
 

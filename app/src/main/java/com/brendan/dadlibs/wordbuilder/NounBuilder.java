@@ -1,8 +1,9 @@
 package com.brendan.dadlibs.wordbuilder;
 
-import com.brendan.dadlibs.engine.Inflection;
 import static com.brendan.dadlibs.wordbuilder.CharUtil.isConsonant;
 import static com.brendan.dadlibs.wordbuilder.CharUtil.matchCase;
+
+import com.brendan.dadlibs.engine.Inflection;
 
 public class NounBuilder implements WordBuilder{
 
