@@ -52,6 +52,10 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                     executor.execute(() -> {
                                         AppDatabase appDb = getDatabase(context);
+
+                                        List<Template> templates = PreLoader.loadTemplates(context);
+                                        appDb.templateDao().insert(templates);
+
                                         List<WordList> lists = PreLoader.loadWordLists(context);
                                         appDb.wordListDao().insert(lists);
 
@@ -60,9 +64,6 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                         List<InflectedForm> inflectedForms = PreLoader.loadInflectedForms(context);
                                         appDb.inflectionDao().insert(inflectedForms);
-
-                                        List<Template> templates = PreLoader.loadTemplates(context);
-                                        appDb.templateDao().insert(templates);
                                     });
                                 }
                             }).build();
