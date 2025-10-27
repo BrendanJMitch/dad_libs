@@ -13,6 +13,14 @@
     <string name="new_dad_lib">New Dad Lib</string>
     <string name="template_menu">Template Menu</string>
     <string name="new_word_list">New Word List</string>
+    <string name="edit_word_list">Edit Word List</string>
     <string name="word_list_menu">Word List Menu</string>
     <string name="new_word">New Word</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="sad_bluey_description">Sad Bluey</string>
+    <string name="confirm_delete_word_list">Are you sure you want to delete %1$s?</string>
+    <string name="word_list_name">Name</string>
+    <string name="part_of_speech">Part of Speech</string>
+    <string name="part_of_speech_disabled_helper">Part of Speech can\'t be changed for non-empty list</string>
 </resources>
