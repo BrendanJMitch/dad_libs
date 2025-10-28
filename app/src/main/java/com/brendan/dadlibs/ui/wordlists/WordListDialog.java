@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.entity.WordList;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -43,6 +45,7 @@ public class WordListDialog {
         TextInputEditText nameInput = dialogView.findViewById(R.id.name_input);
         TextInputLayout posLayout = dialogView.findViewById(R.id.part_of_speech_layout);
         AutoCompleteTextView posDropdown = dialogView.findViewById(R.id.part_of_speech_dropdown);
+        LinearLayout examplesContainer = dialogView.findViewById(R.id.example_sentence_container);
 
         ArrayAdapter<PartOfSpeech> adapter = new ArrayAdapter<>(
                 context,
@@ -55,6 +58,11 @@ public class WordListDialog {
         posLayout.setEnabled(posEnabled);
         posLayout.setHelperTextEnabled(!posEnabled);
 
+        posDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            PartOfSpeech selected = (PartOfSpeech) parent.getItemAtPosition(position);
+            updateExampleSentences(examplesContainer, selected);
+        });
+
         return new MaterialAlertDialogBuilder(context)
                 .setTitle(title)
                 .setView(dialogView)
@@ -64,5 +72,18 @@ public class WordListDialog {
                     String partOfSpeech = posDropdown.getText() != null ? posDropdown.getText().toString() : "";
                 })
                 .setNegativeButton("Cancel", null);
+    }
+
+    private void updateExampleSentences(LinearLayout examples, PartOfSpeech partOfSpeech){
+        examples.removeAllViews();
+        examples.setVisibility(View.VISIBLE);
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        for (Inflection inflection : partOfSpeech.inflections){
+            View layout = inflater.inflate(R.layout.input_example_sentence, examples, false);
+            TextInputLayout textInput = layout.findViewById(R.id.example_sentence_input);
+            textInput.setHint(inflection.getLabel());
+            examples.addView(layout);
+        }
     }
 }
