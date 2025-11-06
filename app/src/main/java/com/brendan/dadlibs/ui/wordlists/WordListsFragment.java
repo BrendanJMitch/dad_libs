@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.entity.WordList;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,21 +49,23 @@ public class WordListsFragment extends Fragment {
         wordListRecycler.setAdapter(wordListAdapter);
 
         newWordListButton.setOnClickListener(v -> {
-            new WordListDialog(requireContext()).show();
+            new WordListDialog(requireContext()).show((String name, PartOfSpeech partofSpeech) -> {
+                WordList wordList = new WordList(name, false, partofSpeech.label);
+                viewModel.insertWordList(wordList, this::onWordListsLoaded);
+            });
         });
 
         viewModel = new ViewModelProvider(this).get(WordListsViewModel.class);
-        viewModel.updateWordLists(new WordListsViewModel.DataLoadedCallback() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onLoaded(List<WordList> wordLists) {
-                for (WordList wordList : wordLists)
-                    wordListAdapter.addWordList(wordList, viewModel.getPreview(wordList));
-                wordListAdapter.notifyDataSetChanged();
-            }
-        });
-
+        viewModel.getAllWordLists(this::onWordListsLoaded);
         return fragment;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void onWordListsLoaded(List<WordList> wordLists) {
+        wordListAdapter.clear();
+        for (WordList wordList : wordLists)
+            wordListAdapter.addWordList(wordList, viewModel.getPreview(wordList));
+        wordListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -95,8 +98,14 @@ public class WordListsFragment extends Fragment {
         popup.show();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void editWordList(WordList wordList){
-        new WordListDialog(requireContext()).show(wordList, viewModel.isEmpty(wordList));
+        new WordListDialog(requireContext()).show(wordList, viewModel.isEmpty(wordList), (String name, PartOfSpeech partofSpeech) -> {
+            wordList.partOfSpeech = partofSpeech.label;
+            wordList.name = name;
+            wordListAdapter.notifyDataSetChanged();
+            viewModel.updateWordList(wordList);
+        });
     }
 
     @SuppressLint("NotifyDataSetChanged")

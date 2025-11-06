@@ -9,6 +9,7 @@
     <!-- Name -->
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        android:id="@+id/word_list_name_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
@@ -36,6 +37,10 @@
             android:id="@+id/part_of_speech_dropdown"
             android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false"
+            android:cursorVisible="false"
+            android:clickable="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

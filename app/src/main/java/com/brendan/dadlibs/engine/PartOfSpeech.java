@@ -39,10 +39,12 @@ public enum PartOfSpeech {
     public final String displayName;
     public final String label;
     private static final Map<String, PartOfSpeech> labelMap = new TreeMap<>();
+    private static final Map<String, PartOfSpeech> displayNameMap = new TreeMap<>();
 
     static {
         for (PartOfSpeech p : EnumSet.allOf(PartOfSpeech.class)){
             labelMap.put(p.label, p);
+            displayNameMap.put(p.displayName, p);
         }
     }
 
@@ -54,6 +56,10 @@ public enum PartOfSpeech {
 
     public static PartOfSpeech getByLabel(String label){
         return labelMap.get(label);
+    }
+
+    public static PartOfSpeech getByDisplayName(String displayName){
+        return displayNameMap.get(displayName);
     }
 
     @NonNull

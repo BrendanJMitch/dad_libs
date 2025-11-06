@@ -38,7 +38,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
         void onMenuClick(View v, WordList wordList);
     }
 
-    private List<WordList> wordLists;
+    private final List<WordList> wordLists;
     private final Map<Long, String> previews;
     private final OnClickListener onClickListener;
 
@@ -70,15 +70,17 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
 
     @Override
     public int getItemCount() {
-        if (wordLists != null)
-            return wordLists.size();
-        else
-            return 0;
+        return wordLists.size();
     }
 
     public void addWordList(WordList wordList, String preview){
         this.wordLists.add(wordList);
         this.previews.put(wordList.id, preview);
+    }
+
+    public void clear(){
+        this.wordLists.clear();
+        this.previews.clear();
     }
 
     public void removeWordList(WordList wordList){
