@@ -93,6 +93,10 @@ public class WordListsFragment extends Fragment {
                 deleteWordList(wordList);
                 return true;
             }
+            if (item.getItemId() == R.id.menu_copy) {
+                copyWordList(wordList);
+                return true;
+            }
             return false;
         });
         popup.show();
@@ -106,6 +110,17 @@ public class WordListsFragment extends Fragment {
             wordListAdapter.notifyDataSetChanged();
             viewModel.updateWordList(wordList);
         });
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void copyWordList(WordList wordList){
+        WordList copy = new WordList(
+                String.format("%s (copy)", wordList.name),
+                false,
+                wordList.partOfSpeech
+        );
+        viewModel.insertWordList(copy, this::onWordListsLoaded);
     }
 
     @SuppressLint("NotifyDataSetChanged")
