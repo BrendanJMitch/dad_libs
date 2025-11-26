@@ -115,12 +115,10 @@ public class WordListsFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void copyWordList(WordList wordList){
-        WordList copy = new WordList(
+        viewModel.copyWordList(
+                wordList,
                 String.format("%s (copy)", wordList.name),
-                false,
-                wordList.partOfSpeech
-        );
-        viewModel.insertWordList(copy, this::onWordListsLoaded);
+                this::onWordListsLoaded);
     }
 
     @SuppressLint("NotifyDataSetChanged")

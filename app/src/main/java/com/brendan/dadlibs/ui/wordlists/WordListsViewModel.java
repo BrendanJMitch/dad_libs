@@ -12,6 +12,7 @@ import com.brendan.dadlibs.db.AppDatabase;
 import com.brendan.dadlibs.entity.Word;
 import com.brendan.dadlibs.entity.WordList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class WordListsViewModel extends AndroidViewModel {
 
     private final WordListDao wordListDao;
     private final WordDao wordDao;
-    private final Map<Long, List<Word>> wordLists;
+    private final Map<Long, List<Word>> wordsByListId;
 
     public interface DataLoadedCallback {
         void onLoaded(List<WordList> wordLists);
@@ -31,14 +32,14 @@ public class WordListsViewModel extends AndroidViewModel {
         super(application);
         wordListDao = AppDatabase.getDatabase(application).wordListDao();
         wordDao = AppDatabase.getDatabase(application).wordDao();
-        wordLists = new HashMap<>();
+        wordsByListId = new HashMap<>();
     }
 
     public void getAllWordLists(DataLoadedCallback callback){
         AppDatabase.executor.execute(() -> {
             List<WordList> wordLists = wordListDao.getAll();
             for (WordList wordList : wordLists){
-                this.wordLists.put(wordList.id, wordDao.getAllFromList(wordList.id));
+                this.wordsByListId.put(wordList.id, wordDao.getAllFromList(wordList.id));
             }
             new Handler(Looper.getMainLooper()).post(() -> callback.onLoaded(wordLists));
         });
@@ -48,30 +49,43 @@ public class WordListsViewModel extends AndroidViewModel {
         AppDatabase.executor.execute(() -> wordListDao.update(wordList));
     }
 
-    public void insertWordList(WordList wordList, DataLoadedCallback callback){;
-        wordLists.clear();
+    public void copyWordList(WordList original, String newName, DataLoadedCallback callback){
+        WordList copy = new WordList(newName, false, original.partOfSpeech);
         AppDatabase.executor.execute(() -> {
-            wordListDao.insert(wordList);
-            List<WordList> wordLists = wordListDao.getAll();
-            for (WordList list : wordLists){
-                this.wordLists.put(list.id, wordDao.getAllFromList(list.id));
+            long newId = wordListDao.insert(copy);
+            List<Word> words = wordDao.getAllFromList(original.id);
+            for (Word word : words) {
+                word.id = null;
+                word.wordListId = newId;
             }
+            wordDao.insert(words);
+            this.wordsByListId.put(newId, words);
+            List<WordList> wordLists = wordListDao.getAll();
+            new Handler(Looper.getMainLooper()).post(() -> callback.onLoaded(wordLists));
+        });
+    }
+
+    public void insertWordList(WordList wordList, DataLoadedCallback callback){;
+        AppDatabase.executor.execute(() -> {
+            long newId = wordListDao.insert(wordList);
+            this.wordsByListId.put(newId, new ArrayList<>());
+            List<WordList> wordLists = wordListDao.getAll();
             new Handler(Looper.getMainLooper()).post(() -> callback.onLoaded(wordLists));
         });
     }
 
     public void deleteWordList(WordList wordList){
         AppDatabase.executor.execute(() -> wordListDao.delete(wordList));
-        wordLists.remove(wordList.id);
+        wordsByListId.remove(wordList.id);
     }
 
     public boolean isEmpty(WordList wordList){
-        return Objects.requireNonNull(wordLists.get(wordList.id)).isEmpty();
+        return Objects.requireNonNull(wordsByListId.get(wordList.id)).isEmpty();
     }
 
     public String getPreview(WordList wordList){
         StringBuilder preview = new StringBuilder();
-        for (Word word : Objects.requireNonNull(wordLists.get(wordList.id))){
+        for (Word word : Objects.requireNonNull(wordsByListId.get(wordList.id))){
             preview.append(word.word).append(", ");
             if (preview.length() > 100)
                 break;
