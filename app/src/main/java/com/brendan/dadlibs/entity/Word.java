@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey;
         onDelete = ForeignKey.CASCADE
     ), indices = {
         @Index(value = "wordListId"),
-        @Index(value = "word", unique = true)}
+        @Index(value = "word")}
 )
 public class Word {
     @PrimaryKey
