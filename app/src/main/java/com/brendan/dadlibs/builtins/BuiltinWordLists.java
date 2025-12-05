@@ -47,8 +47,16 @@ public class BuiltinWordLists {
             PartOfSpeech.ADJECTIVE.label
     );
 
-    public static final WordList PEOPLE = new WordList(
+    public static final WordList ADVERBS = new WordList(
             5L,
+            "Adverbs",
+            "adverb",
+            true,
+            PartOfSpeech.OTHER.label
+    );
+
+    public static final WordList PEOPLE = new WordList(
+            6L,
             "People",
             "person",
             true,
@@ -56,7 +64,7 @@ public class BuiltinWordLists {
     );
 
     public static final WordList PLACES = new WordList(
-            6L,
+            7L,
             "Places",
             "place",
             true,
@@ -70,6 +78,7 @@ public class BuiltinWordLists {
             UNCOUNTABLE_NOUNS,
             PLACES,
             PEOPLE,
-            ADJECTIVES
+            ADJECTIVES,
+            ADVERBS
     );
 }

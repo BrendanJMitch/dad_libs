@@ -101,6 +101,18 @@ public class BuiltinWords {
                     "plague-ridden",
                     "fleshy"
             )),
+            entry(BuiltinWordLists.ADVERBS.id, List.of(
+                    "angrily",
+                    "crudely",
+                    "narcissistically",
+                    "irrationally",
+                    "beautifully",
+                    "intoxicatingly",
+                    "hungrily",
+                    "fleshily",
+                    "morosely",
+                    "briefly"
+            )),
             entry(BuiltinWordLists.PEOPLE.id, List.of(
                     "Barack Obama",
                     "Zeus",
