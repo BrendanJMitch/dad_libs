@@ -28,4 +28,7 @@ public interface WordListDao {
     @Query("Select * FROM WordList")
     List<WordList> getAll();
 
+    @Query("Select * FROM WordList w WHERE w.id = :id")
+    WordList getById(long id);
+
 }

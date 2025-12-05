@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.entity.Word;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class WordsFragment extends Fragment {
     private WordAdapter wordAdapter;
     private WordsViewModel viewModel;
     private RecyclerView wordRecycler;
+    private FloatingActionButton newWordButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,21 +37,19 @@ public class WordsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View fragment = inflater.inflate(R.layout.fragment_word_lists, container, false);
-        wordRecycler = fragment.findViewById(R.id.word_list_recycler);
+        View fragment = inflater.inflate(R.layout.fragment_words, container, false);
+        wordRecycler = fragment.findViewById(R.id.word_recycler);
+        newWordButton = fragment.findViewById(R.id.new_word_button);
         viewModel = new ViewModelProvider(this).get(WordsViewModel.class);
 
         wordAdapter = new WordAdapter(word -> {});
         wordRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         wordRecycler.setAdapter(wordAdapter);
 
-        viewModel.updateWords(wordListId, new WordsViewModel.DataLoadedCallback() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onLoaded(List<Word> words) {
-                wordAdapter.setWords(words);
-                wordAdapter.notifyDataSetChanged();
-            }
+        viewModel.loadWords(wordListId, this::updateWords);
+
+        newWordButton.setOnClickListener(v -> {
+            new WordDialog(requireContext(), viewModel).show();
         });
 
         return fragment;
@@ -59,4 +59,11 @@ public class WordsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void updateWords(List<Word> words){
+        wordAdapter.setWords(words);
+        wordAdapter.notifyDataSetChanged();
+    }
+
 }

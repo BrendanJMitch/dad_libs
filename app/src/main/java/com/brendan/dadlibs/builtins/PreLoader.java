@@ -43,7 +43,7 @@ public class PreLoader {
             WordBuilder builder = builderProvider.getWordBuilder(partOfSpeech);
 
             for (Word word : words){
-                for (Inflection inflection : partOfSpeech.inflections) {
+                for (Inflection inflection : partOfSpeech.getInflections()) {
                     forms.add(new InflectedForm(
                             word.id,
                             inflection.getLabel(),

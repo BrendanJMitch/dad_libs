@@ -1,33 +1,39 @@
 package com.brendan.dadlibs.engine;
 
 public enum Inflection {
-    SINGULAR("singular", "N;SG"),
-    PLURAL("plural", "N;PL"),
-    POSSESSIVE("possessive", ""),
-    PLURAL_POSSESSIVE("plural_possessive", ""),
+    SINGULAR("singular", "Singular", "N;SG"),
+    PLURAL("plural", "Plural", "N;PL"),
+    POSSESSIVE("possessive", "Possessive", ""),
+    PLURAL_POSSESSIVE("plural_possessive", "Plural Possessive", ""),
 
-    PRESENT("present", "V;NFIN;IMP+SBJV"),
-    THIRD_PERSON_PRESENT("third_person_present", "V;PRS;3;SG"),
-    SIMPLE_PAST("simple_past", "V;PST"),
-    PRESENT_PARTICIPLE("present_participle", "V;V.PTCP;PRS"),
-    PAST_PARTICIPLE("past_participle", "V;V.PTCP;PST"),
+    PRESENT("present", "Present", "V;NFIN;IMP+SBJV"),
+    THIRD_PERSON_PRESENT("third_person_present", "Third-person Present", "V;PRS;3;SG"),
+    SIMPLE_PAST("simple_past", "Simple Past", "V;PST"),
+    PRESENT_PARTICIPLE("present_participle", "Present Participle", "V;V.PTCP;PRS"),
+    PAST_PARTICIPLE("past_participle", "Past Participle", "V;V.PTCP;PST"),
 
-    ABSOLUTE("absolute", "ADJ;"),
-    COMPARATIVE("comparative", "ADJ;CMPR"),
-    SUPERLATIVE("superlative", "ADJ;SPRL"),
+    ABSOLUTE("absolute", "Absolute", "ADJ;"),
+    COMPARATIVE("comparative", "Comparative", "ADJ;CMPR"),
+    SUPERLATIVE("superlative", "Superlative", "ADJ;SPRL"),
 
-    OTHER("adverb", "");
+    OTHER("other", "Other", "");
 
     private final String label;
     private final String unimorphModifiers;
+    private final String displayName;
 
-    Inflection(String label, String unimorphModifiers){
+    Inflection(String label, String displayName, String unimorphModifiers){
         this.label = label;
+        this.displayName = displayName;
         this.unimorphModifiers = unimorphModifiers;
     }
 
     public String getLabel() {
         return label;
+    }
+
+    public String getDisplayName(){
+        return displayName;
     }
     public String getUnimorphModifiers() {
         return unimorphModifiers;

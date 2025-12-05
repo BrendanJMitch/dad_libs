@@ -15,6 +15,8 @@ public class AdjectiveBuilder implements WordBuilder{
     }
     @Override
     public String getInflectedForm(String adjectiveString, Inflection type) {
+        if (adjectiveString.length() < 2)
+            return "";
         if (type == Inflection.ABSOLUTE)
             return adjectiveString;
         String[] words = adjectiveString.split(" ");
@@ -35,6 +37,8 @@ public class AdjectiveBuilder implements WordBuilder{
     }
 
     private String getSingleAdjectiveInflection(String adjective, Inflection type){
+        if (adjective.length() < 2)
+            return "";
         String[] forms = dao.getInflectedForms(adjective, type.getUnimorphModifiers());
         if (forms.length > 0)
             return matchCase(adjective, forms[0]);

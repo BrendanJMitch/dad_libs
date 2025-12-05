@@ -9,9 +9,14 @@ import androidx.room.RoomDatabase;
 import com.brendan.dadlibs.db.AppDatabase;
 import com.brendan.dadlibs.entity.UnimorphEntry;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Database( entities = {UnimorphEntry.class}, version = 1)
 public abstract class UnimoprhDatabase extends RoomDatabase{
 
+    public static final ExecutorService executor =
+            Executors.newFixedThreadPool(4);
     public abstract UnimorphDao unimorphDao();
 
     private static volatile UnimoprhDatabase INSTANCE;

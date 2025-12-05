@@ -15,6 +15,8 @@ public class NounBuilder implements WordBuilder{
 
     @Override
     public String getInflectedForm(String noun, Inflection type){
+        if (noun.length() < 2)
+            return "";
         switch (type) {
             case PLURAL:
                 return getPlural(noun);
@@ -44,6 +46,8 @@ public class NounBuilder implements WordBuilder{
     }
 
     private String getSingleWordPlural(String noun){
+        if (noun.length() < 2)
+            return "";
         String[] forms = dao.getInflectedForms(noun, Inflection.PLURAL.getUnimorphModifiers());
         if (forms.length > 0)
             return matchCase(noun, forms[0]);

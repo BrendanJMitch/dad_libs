@@ -16,6 +16,7 @@
     <string name="edit_word_list">Edit Word List</string>
     <string name="word_list_menu">Word List Menu</string>
     <string name="new_word">New Word</string>
+    <string name="edit_word">Edit Word</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="sad_bluey_description">Sad Bluey</string>
@@ -24,4 +25,6 @@
     <string name="part_of_speech">Part of Speech</string>
     <string name="part_of_speech_disabled_helper">Part of Speech can\'t be changed for non-empty list</string>
     <string name="copy">Copy</string>
+    <string name="word_base_form">Base Form (%s)</string>
+    <string name="inflected_forms">Inflected Forms</string>
 </resources>

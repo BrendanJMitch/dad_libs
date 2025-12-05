@@ -16,6 +16,8 @@ public class VerbBuilder implements WordBuilder{
 
     @Override
     public String getInflectedForm(String verbString, Inflection type){
+        if (verbString.length() < 2)
+            return "";
         if (type == Inflection.PRESENT)
             return verbString;
         String[] words = verbString.split(" ");
@@ -35,6 +37,8 @@ public class VerbBuilder implements WordBuilder{
 
     private String getSingleVerbInflection(String verb, Inflection type){
         String[] forms = dao.getInflectedForms(verb, type.getUnimorphModifiers());
+        if (verb.length() < 2)
+            return "";
         if (forms.length > 0)
             return matchCase(verb, forms[0]);
         switch (type){
