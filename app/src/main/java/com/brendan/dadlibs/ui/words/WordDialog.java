@@ -16,6 +16,7 @@ import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.entity.Word;
 import com.brendan.dadlibs.entity.WordList;
 import com.brendan.dadlibs.ui.wordlists.WordListDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -38,6 +39,7 @@ public class WordDialog {
     private final Context context;
     private final WordsViewModel viewModel;
     private final Map<Inflection, TextInputEditText> inflectionInputs;
+    private final Map<Inflection, TextInputLayout> inflectionLayouts;
     private LayoutInflater inflater;
     private final AlertDialog dialog;
     private final TextInputEditText nameInput;
@@ -64,6 +66,7 @@ public class WordDialog {
         this.viewModel = viewModel;
         this.title = title;
         this.inflectionInputs = new HashMap<>();
+        this.inflectionLayouts = new HashMap<>();
 
         inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_word, null);
@@ -89,12 +92,35 @@ public class WordDialog {
     }
 
     private AlertDialog getDialog(View view){
-        return new AlertDialog.Builder(context)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(title)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            boolean shouldDismiss = true;
+            Editable word = nameInput.getText();
+            if (word == null || word.toString().trim().isEmpty()) {
+                nameLayout.setErrorEnabled(true);
+                nameLayout.setError("Please specify the base form!");
+                shouldDismiss = false;
+            } else {
+                nameLayout.setErrorEnabled(false);
+            }
+            for (Map.Entry<Inflection, TextInputEditText> entry : inflectionInputs.entrySet()) {
+                Editable inflectedForm = entry.getValue().getText();
+                TextInputLayout layout = Objects.requireNonNull(inflectionLayouts.get(entry.getKey()));
+                if (inflectedForm == null || inflectedForm.toString().trim().isEmpty()) {
+                    layout.setErrorEnabled(true);
+                    layout.setError("Please specify the");
+                    shouldDismiss = false;
+                } else {
+                    layout.setErrorEnabled(false);
+                }
+            }
+        });
+        return dialog;
     }
 
     public void show(){
@@ -111,6 +137,7 @@ public class WordDialog {
             TextInputLayout inputLayout = inputView.findViewById(R.id.inflected_form_input_layout);
             TextInputEditText inputEditText = inputView.findViewById(R.id.inflected_form_input);
             inflectionInputs.put(inflection, inputEditText);
+            inflectionLayouts.put(inflection, inputLayout);
 
             inputLayout.setHint(inflection.getDisplayName());
             inputView.setTag(inflection);
