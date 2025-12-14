@@ -76,7 +76,8 @@ public class WordsViewModel extends AndroidViewModel {
                 if (word == null)
                     wordInflections.put(inflection, "");
                 else
-                    inflectionDao.getInflection(word.id, inflection.getLabel());
+                    wordInflections.put(inflection,
+                            inflectionDao.getInflection(word.id, inflection.getLabel()));
             }
             new Handler(Looper.getMainLooper()).post(() ->
                     callback.onLoaded(wordInflections));
@@ -94,11 +95,10 @@ public class WordsViewModel extends AndroidViewModel {
         });
     }
 
-    public void saveWord(String word, Map<Inflection, String> inflectedForms) {
-        Word newWord = new Word(word, wordList.id);
+    public void saveWord(Word word, Map<Inflection, String> inflectedForms) {
         List<InflectedForm> inflectedFormList = new ArrayList<>();
         AppDatabase.executor.execute(() -> {
-            long wordId = wordDao.insert(newWord);
+            long wordId = wordDao.insert(word);
             for (Map.Entry<Inflection, String> entry : inflectedForms.entrySet()) {
                 inflectedFormList.add(new InflectedForm(
                         wordId, entry.getKey().getLabel(), entry.getValue()));

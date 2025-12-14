@@ -44,13 +44,15 @@ public class WordDialog {
     private final LinearLayout inflectedFormsLayout;
     private final OnSaveListener onSaveListener;
     private final String title;
-    private Word word;
+
+    private boolean suppressTextWatcher = false;
 
 
     public WordDialog(Context context, WordsViewModel viewModel, OnSaveListener onSaveListener, Word word) {
         this(context, viewModel, context.getString(R.string.new_word), onSaveListener);
-        this.word = word;
+        suppressTextWatcher = true;
         nameInput.setText(word.word);
+        suppressTextWatcher = false;
         viewModel.loadWordInflections(word, this::updateInflections);
     }
 
@@ -74,7 +76,8 @@ public class WordDialog {
         nameInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                viewModel.buildWordInflections(s.toString(), WordDialog.this::updateInflections);
+                if (!suppressTextWatcher)
+                    viewModel.buildWordInflections(s.toString(), WordDialog.this::updateInflections);
             }
 
             @Override

@@ -46,15 +46,18 @@ public class WordsFragment extends Fragment {
         newWordButton = fragment.findViewById(R.id.new_word_button);
         viewModel = new ViewModelProvider(this).get(WordsViewModel.class);
 
-        wordAdapter = new WordAdapter(word -> {});
+        wordAdapter = new WordAdapter(word -> {
+            WordDialog.OnSaveListener listener = (String wordStr, Map<Inflection, String> inflectedForms) ->
+                    updateWord(word.id, wordStr, inflectedForms);
+            new WordDialog(requireContext(), viewModel, listener, word).show();
+        });
         wordRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         wordRecycler.setAdapter(wordAdapter);
 
         viewModel.loadWords(wordListId, this::updateWords);
 
-        newWordButton.setOnClickListener(v -> {
-            new WordDialog(requireContext(), viewModel, this::saveWord).show();
-        });
+        newWordButton.setOnClickListener(v ->
+            new WordDialog(requireContext(), viewModel, this::saveWord).show());
 
         return fragment;
     }
@@ -64,15 +67,19 @@ public class WordsFragment extends Fragment {
         super.onDestroyView();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void updateWords(List<Word> words){
         wordAdapter.setWords(words);
-        wordAdapter.notifyDataSetChanged();
     }
 
     private void saveWord(String word, Map<Inflection, String> inflectedForms){
-        wordAdapter.addWord(new Word(word, wordListId));
-        wordAdapter.notifyItemChanged(wordAdapter.getItemCount() - 1);
-        viewModel.saveWord(word, inflectedForms);
+        Word newWord = new Word(word, wordListId);
+        wordAdapter.addWord(newWord);
+        viewModel.saveWord(newWord, inflectedForms);
+    }
+
+    private void updateWord(Long wordID, String word, Map<Inflection, String> inflectedForms){
+        Word newWord = new Word(wordID, word, wordListId);
+        wordAdapter.updateWord(newWord);
+        viewModel.saveWord(newWord, inflectedForms);
     }
 }

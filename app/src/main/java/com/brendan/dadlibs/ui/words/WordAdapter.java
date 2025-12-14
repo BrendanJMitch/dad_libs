@@ -14,6 +14,7 @@ import com.brendan.dadlibs.entity.Word;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder> {
 
@@ -79,9 +80,21 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
 
     public void setWords(List<Word> words){
         this.words = new ArrayList<>(words);
+        notifyDataSetChanged();
     }
 
     public void addWord(Word word){
         this.words.add(word);
+        notifyItemChanged(words.size() - 1);
+    }
+
+    public void updateWord(Word word) {
+        for (int i = 0; i < words.size(); i++) {
+            if (Objects.equals(words.get(i).id, word.id)) {
+                words.set(i, word);
+                notifyItemChanged(i);
+                break;
+            }
+        }
     }
 }
