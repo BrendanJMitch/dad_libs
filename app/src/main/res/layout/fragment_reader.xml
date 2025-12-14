@@ -28,6 +28,10 @@
             android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="?android:textColorSecondary"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="96dp"/>
+
     </LinearLayout>
 
 </ScrollView>
