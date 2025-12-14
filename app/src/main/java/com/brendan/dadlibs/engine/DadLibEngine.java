@@ -43,12 +43,18 @@ public class DadLibEngine {
             String[] tokens = matcher.group(1).split(" ");
             String listIdentifier = tokens[0];
             String inflectionType = tokens[2];
+            // TODO: See below
+            Word word = null;
             try {
                 int index = Integer.parseInt(tokens[1]);
-                Word word = randomWords.get(listIdentifier).get(index);
-                matcher.appendReplacement(sb, inflector.getInflection(word, inflectionType));
+                word = randomWords.get(listIdentifier).get(index);
+                String replacement = inflector.getInflection(word, inflectionType);
+                matcher.appendReplacement(sb, replacement);
             } catch (Exception e) {
-                matcher.appendReplacement(sb, "(unknown word type)");
+                // TODO: This is a temporary measure to catch an intermittent bug. Once that gets
+                //  fixed, remove this!
+                throw new RuntimeException(String.format("Failed to fetch %s form of %s from the list %s.", inflectionType, word.word, listIdentifier));
+                //matcher.appendReplacement(sb, "(unknown word type)");
             }
         }
         matcher.appendTail(sb);
