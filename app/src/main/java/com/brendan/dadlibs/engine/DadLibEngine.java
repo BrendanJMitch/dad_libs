@@ -61,6 +61,11 @@ public class DadLibEngine {
         return new SavedStory(template.name, template.id, sb.toString(), null, null);
     }
 
+    public static String getPreview(Template template){
+        String fillInTheBlank = " \u0332 \u0332 \u0332 \u0332 \u0332";
+        return template.text.replaceAll(markerPattern.toString(), fillInTheBlank);
+    }
+
     private void shuffleWords(){
         for (List<Word> randomWordList : randomWords.values()){
             Collections.shuffle(randomWordList);

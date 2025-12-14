@@ -1,5 +1,7 @@
 package com.brendan.dadlibs.ui.home;
 
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.engine.DadLibEngine;
 import com.brendan.dadlibs.entity.Template;
 
 import java.util.ArrayList;
@@ -30,6 +33,19 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
             title = itemView.findViewById(R.id.template_title);
             preview = itemView.findViewById(R.id.template_preview);
             menuButton = itemView.findViewById(R.id.template_menu);
+            preview.post(() -> {
+                LinearGradient shader = new LinearGradient(
+                        0, 0, 0, preview.getHeight(),
+                        new int[]{
+                                0xFF000000,   // fully opaque at top
+                                0x00000000    // fully transparent at bottom
+                        },
+                        null,
+                        Shader.TileMode.CLAMP
+                );
+                preview.getPaint().setShader(shader);
+                preview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            });
         }
     }
 
@@ -61,23 +77,7 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
         Template template = templates.get(index);
 
         holder.title.setText(template.name);
-        holder.preview.setText(template.text);
-
-        TypedValue typedValue = new TypedValue();
-        boolean found = holder.title.getContext().getTheme()
-                .resolveAttribute(
-                        com.google.android.material.R.attr.textAppearanceTitleMedium,
-                        typedValue,
-                        true);
-
-        if (found) {
-            int styleResId = typedValue.resourceId;
-            // Apply this style to the TextView
-            holder.title.setTextAppearance(styleResId);
-        } else {
-            Log.w("PIZZA cow", "Could not resolve textAppearanceTitleMedium!");
-            Log.w("PIZZA ferret", holder.title.getContext().getTheme().toString());
-        }
+        holder.preview.setText(DadLibEngine.getPreview(template));
 
         holder.itemView.setOnClickListener(v -> templateClickListener.onClick(template));
         holder.menuButton.setOnClickListener(v -> menuClickListener.onClick(template));
@@ -94,4 +94,5 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
     public void setTemplates(List<Template> templates){
         this.templates = templates;
     }
+
 }
