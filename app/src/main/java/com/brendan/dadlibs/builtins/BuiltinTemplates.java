@@ -37,8 +37,8 @@ public class BuiltinTemplates {
                             "${noun 1 singular}, but Captain ${person 2 singular} is captured by Norrington's men and imprisoned. The " +
                             "pirates from the Black ${noun 2 singular} take Elizabeth hostage. She pretends to be called \"${person 3 " +
                             "singular}\", and Barbossa reveals to Elizabeth that his crew are cursed to be ${adjective 1 absolute} for " +
-                            "stealing magic golden ${noun 0 singular}s. In order to free themselves, the crew must ${transitive_verb 0 " +
-                            "present} all *num* ${noun 0 singular}s and give ${uncountable_noun 0 singular} sacrifices, but still need " +
+                            "stealing magic golden ${noun 0 plural}. In order to free themselves, the crew must ${transitive_verb 0 " +
+                            "present} all 100 ${noun 0 plural} and give ${uncountable_noun 0 singular} sacrifices, but still need " +
                             "the last ${noun 0 singular} and Elizabeth's ${uncountable_noun 0 singular} to complete it. Captain " +
                             "${person 2 singular} agrees to help ${person 1 singular} ${transitive_verb 1 present} Elizabeth if " +
                             "${person 1 singular} lets him out of jail. They commandeer a ship and recruit a ${adjective 2 absolute} " +
@@ -49,7 +49,7 @@ public class BuiltinTemplates {
                             "revealed to be cursed too, having taken a ${noun 0 singular} from Cortez's chest. Captain ${person 2 " +
                             "singular} shoots Barbossa, with ${person 1 singular} revealing the curse has been lifted by adding the " +
                             "last ${noun 0 singular}, and Barbossa ${intransitive_verb 0 third_person_present}. A short time later, " +
-                            "${person 2 singular} is sentenced to ${intransitive_verb 1 past_participle} in public, but ${person 1 " +
+                            "${person 2 singular} is sentenced to be ${transitive_verb 1 past_participle} in public, but ${person 1 " +
                             "singular} attempts to rescue him. The two are captured, but when Elizabeth defends them both, Captain " +
                             "${person 2 singular} escapes aboard the Black ${noun 2 singular}. Governor ${person 0 singular} " +
                             "${transitive_verb 2 third_person_present} ${person 1 singular} and gives his blessing for Elizabeth to " +
@@ -74,7 +74,7 @@ public class BuiltinTemplates {
                             "singular} escapes and gets the fairies to help by giving them a potion made of ${uncountable_noun 1 " +
                             "singular}, ${uncountable_noun 2 singular}, and ${uncountable_noun 3 singular}. This turns them into " +
                             "super-${noun 8 plural} and they in turn give ${person 0 singular} the honor of making her ${adjective 2 " +
-                            "absolute}. They defeat Muriel and the demon and live ${adjective 3 adverb} ever after. "
+                            "absolute}. They defeat Muriel and the demon and live ${adverb 3 other} ever after. "
             )
     );
 }
