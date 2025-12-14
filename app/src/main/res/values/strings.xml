@@ -27,4 +27,7 @@
     <string name="copy">Copy</string>
     <string name="word_base_form">Base Form (%s)</string>
     <string name="inflected_forms">Inflected Forms</string>
+    <string name="unspecified_form_error">Please specify the %s form!</string>
+    <string name="template_editor">Template Edtitor</string>
+    <string name="template_title">Title</string>
 </resources>

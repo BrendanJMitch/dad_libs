@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_readerFragment"
             app:destination="@id/reader_fragment"/>
+        <action
+            android:id="@+id/action_homeFragment_to_editorFragment"
+            app:destination="@id/editor_fragment"/>
     </fragment>
 
     <fragment
@@ -27,9 +30,9 @@
 
     <fragment
         android:id="@+id/nav_saved_stories"
-        android:name="com.brendan.dadlibs.ui.slideshow.SlideshowFragment"
+        android:name="com.brendan.dadlibs.ui.stories.StoriesFragment"
         android:label="@string/menu_saved_stories"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_stories" />
 
     <fragment
         android:id="@+id/words_fragment"
@@ -41,6 +44,16 @@
         <argument
             android:name="word_list_name"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editor_fragment"
+        android:name="com.brendan.dadlibs.ui.editor.EditorFragment"
+        android:label="@string/template_editor"
+        tools:layout="@layout/fragment_editor">
+        <argument
+            android:name="template_id"
+            app:argType="long" />
     </fragment>
 
     <fragment
