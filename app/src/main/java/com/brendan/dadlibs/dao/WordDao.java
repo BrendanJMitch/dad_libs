@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface WordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Word word);
+    long insert(Word word);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Word> word);
     @Delete

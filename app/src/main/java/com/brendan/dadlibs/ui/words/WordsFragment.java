@@ -13,10 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.engine.Inflection;
+import com.brendan.dadlibs.entity.InflectedForm;
 import com.brendan.dadlibs.entity.Word;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class WordsFragment extends Fragment {
 
@@ -49,7 +53,7 @@ public class WordsFragment extends Fragment {
         viewModel.loadWords(wordListId, this::updateWords);
 
         newWordButton.setOnClickListener(v -> {
-            new WordDialog(requireContext(), viewModel).show();
+            new WordDialog(requireContext(), viewModel, this::saveWord).show();
         });
 
         return fragment;
@@ -66,4 +70,9 @@ public class WordsFragment extends Fragment {
         wordAdapter.notifyDataSetChanged();
     }
 
+    private void saveWord(String word, Map<Inflection, String> inflectedForms){
+        wordAdapter.addWord(new Word(word, wordListId));
+        wordAdapter.notifyItemChanged(wordAdapter.getItemCount() - 1);
+        viewModel.saveWord(word, inflectedForms);
+    }
 }

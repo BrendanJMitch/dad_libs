@@ -12,16 +12,17 @@ import com.brendan.dadlibs.dao.WordListDao;
 import com.brendan.dadlibs.db.AppDatabase;
 import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.engine.PartOfSpeech;
+import com.brendan.dadlibs.entity.InflectedForm;
 import com.brendan.dadlibs.entity.Word;
 import com.brendan.dadlibs.entity.WordList;
 import com.brendan.dadlibs.wordbuilder.BuilderProvider;
 import com.brendan.dadlibs.wordbuilder.UnimoprhDatabase;
 import com.brendan.dadlibs.wordbuilder.WordBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class WordsViewModel extends AndroidViewModel {
 
@@ -90,6 +91,19 @@ public class WordsViewModel extends AndroidViewModel {
             }
             new Handler(Looper.getMainLooper()).post(() ->
                     callback.onLoaded(wordInflections));
+        });
+    }
+
+    public void saveWord(String word, Map<Inflection, String> inflectedForms) {
+        Word newWord = new Word(word, wordList.id);
+        List<InflectedForm> inflectedFormList = new ArrayList<>();
+        AppDatabase.executor.execute(() -> {
+            long wordId = wordDao.insert(newWord);
+            for (Map.Entry<Inflection, String> entry : inflectedForms.entrySet()) {
+                inflectedFormList.add(new InflectedForm(
+                        wordId, entry.getKey().getLabel(), entry.getValue()));
+            }
+            inflectionDao.insert(inflectedFormList);
         });
     }
 }

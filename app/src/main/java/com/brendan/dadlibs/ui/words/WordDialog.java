@@ -8,21 +8,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.entity.Word;
-import com.brendan.dadlibs.entity.WordList;
-import com.brendan.dadlibs.ui.wordlists.WordListDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -46,27 +42,29 @@ public class WordDialog {
     private final TextInputLayout nameLayout;
     private final MaterialTextView inflectedFormsHeader;
     private final LinearLayout inflectedFormsLayout;
+    private final OnSaveListener onSaveListener;
     private final String title;
     private Word word;
 
 
-    public WordDialog(Context context, WordsViewModel viewModel, Word word) {
-        this(context, viewModel, context.getString(R.string.new_word));
+    public WordDialog(Context context, WordsViewModel viewModel, OnSaveListener onSaveListener, Word word) {
+        this(context, viewModel, context.getString(R.string.new_word), onSaveListener);
         this.word = word;
         nameInput.setText(word.word);
         viewModel.loadWordInflections(word, this::updateInflections);
     }
 
-    public WordDialog(Context context, WordsViewModel viewModel) {
-        this(context, viewModel, context.getString(R.string.new_word));
+    public WordDialog(Context context, WordsViewModel viewModel, OnSaveListener onSaveListener) {
+        this(context, viewModel, context.getString(R.string.new_word), onSaveListener);
     }
 
-    private WordDialog(Context context, WordsViewModel viewModel, String title) {
+    private WordDialog(Context context, WordsViewModel viewModel, String title, OnSaveListener onSaveListener) {
         this.context = context;
         this.viewModel = viewModel;
         this.title = title;
         this.inflectionInputs = new HashMap<>();
         this.inflectionLayouts = new HashMap<>();
+        this.onSaveListener = onSaveListener;
 
         inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_word, null);
@@ -98,28 +96,9 @@ public class WordDialog {
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            boolean shouldDismiss = true;
-            Editable word = nameInput.getText();
-            if (word == null || word.toString().trim().isEmpty()) {
-                nameLayout.setErrorEnabled(true);
-                nameLayout.setError("Please specify the base form!");
-                shouldDismiss = false;
-            } else {
-                nameLayout.setErrorEnabled(false);
-            }
-            for (Map.Entry<Inflection, TextInputEditText> entry : inflectionInputs.entrySet()) {
-                Editable inflectedForm = entry.getValue().getText();
-                TextInputLayout layout = Objects.requireNonNull(inflectionLayouts.get(entry.getKey()));
-                if (inflectedForm == null || inflectedForm.toString().trim().isEmpty()) {
-                    layout.setErrorEnabled(true);
-                    layout.setError("Please specify the");
-                    shouldDismiss = false;
-                } else {
-                    layout.setErrorEnabled(false);
-                }
-            }
-        });
+
+        dialog.setOnShowListener(dlg ->
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this::onSaveButtonPressed));
         return dialog;
     }
 
@@ -159,5 +138,47 @@ public class WordDialog {
         }
     }
 
-    private void onSave(){}
+    private void onSaveButtonPressed(View v) {
+        boolean shouldDismiss = true;
+        Editable word = nameInput.getText();
+        if (word == null || word.toString().trim().isEmpty()) {
+            nameLayout.setErrorEnabled(true);
+            nameLayout.setError(String.format(
+                    context.getString(R.string.unspecified_form_error),
+                    viewModel.getPartOfSpeech().getBaseInflection().getDisplayName().toLowerCase()));
+            shouldDismiss = false;
+        } else {
+            nameLayout.setErrorEnabled(false);
+        }
+        for (Map.Entry<Inflection, TextInputEditText> entry : inflectionInputs.entrySet()) {
+            Editable inflectedForm = entry.getValue().getText();
+            TextInputLayout layout = Objects.requireNonNull(inflectionLayouts.get(entry.getKey()));
+            if (inflectedForm == null || inflectedForm.toString().trim().isEmpty()) {
+                layout.setErrorEnabled(true);
+                layout.setError(String.format(
+                        context.getString(R.string.unspecified_form_error),
+                        entry.getKey().getDisplayName().toLowerCase()));
+                shouldDismiss = false;
+            } else {
+
+                layout.setErrorEnabled(false);
+            }
+        }
+        if (shouldDismiss){
+            onSaveListener.onSave(word.toString(), getInflectedForms());
+            dialog.dismiss();
+        }
+    }
+
+    private Map<Inflection, String> getInflectedForms(){
+        Map<Inflection, String> inflectedForms = new HashMap<>();
+        for (Map.Entry<Inflection, TextInputEditText> entry : inflectionInputs.entrySet()) {
+            String text = Objects.requireNonNull(entry.getValue().getText()).toString();
+            inflectedForms.put(entry.getKey(), text);
+        }
+        inflectedForms.put(
+                viewModel.getPartOfSpeech().getBaseInflection(),
+                Objects.requireNonNull(nameInput.getText()).toString());
+        return inflectedForms;
+    }
 }

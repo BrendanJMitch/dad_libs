@@ -78,6 +78,10 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
     }
 
     public void setWords(List<Word> words){
-        this.words = words;
+        this.words = new ArrayList<>(words);
+    }
+
+    public void addWord(Word word){
+        this.words.add(word);
     }
 }
