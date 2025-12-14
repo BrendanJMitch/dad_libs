@@ -13,7 +13,6 @@ import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.entity.Word;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -93,7 +92,7 @@ public class WordDialog {
     }
 
     private AlertDialog getDialog(View view){
-        AlertDialog dialog = new MaterialAlertDialogBuilder(context)
+        AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, null)

@@ -64,13 +64,12 @@ public class WordListDialog {
         posLayout.setHelperTextEnabled(!posEnabled);
         posDropdown.setText(posName);
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
+        AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setView(dialogView)
                 .setPositiveButton("Save", null)
-                .setNegativeButton("Cancel", null);
-
-        AlertDialog dialog = builder.create();
+                .setNegativeButton("Cancel", null)
+                .create();
 
         dialog.setOnShowListener(dlg -> {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {

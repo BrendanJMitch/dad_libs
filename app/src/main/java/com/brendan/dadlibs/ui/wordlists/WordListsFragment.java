@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.entity.WordList;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -130,7 +130,7 @@ public class WordListsFragment extends Fragment {
 
         messageView.setText(String.format(getString(R.string.confirm_delete_word_list) , wordList.name));
 
-        new MaterialAlertDialogBuilder(requireContext())
+        new AlertDialog.Builder(requireContext())
                 .setView(dialogView)
                 .setPositiveButton("Delete", (dialog, which) -> {
                     viewModel.deleteWordList(wordList);
