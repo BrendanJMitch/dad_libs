@@ -4,14 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -52,19 +48,6 @@ public class ReaderFragment extends Fragment {
         viewModel.updateTemplate(templateId, story -> {
             titleText.setText(story.name);
             storyText.setText(story.text);
-        });
-
-        ScrollView scrollView = view.findViewById(R.id.reader_scroll);
-
-        ViewCompat.setOnApplyWindowInsetsListener(scrollView, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(
-                    v.getPaddingLeft(),
-                    v.getPaddingTop(),
-                    v.getPaddingRight(),
-                    systemBars.bottom
-            );
-            return insets;
         });
     }
 
