@@ -38,6 +38,10 @@ public class WordsViewModel extends AndroidViewModel {
         void onLoaded(List<Word> words);
     }
 
+    public interface WordLoadedCallback {
+        void onLoaded(Word word);
+    }
+
     public interface InflectionsLoadedCallback {
         void onLoaded(Map<Inflection, String> inflections);
     }
@@ -95,15 +99,25 @@ public class WordsViewModel extends AndroidViewModel {
         });
     }
 
-    public void saveWord(Word word, Map<Inflection, String> inflectedForms) {
+    public void saveWord(Word word, Map<Inflection, String> inflectedForms, WordLoadedCallback callback) {
         List<InflectedForm> inflectedFormList = new ArrayList<>();
         AppDatabase.executor.execute(() -> {
             long wordId = wordDao.insert(word);
+            word.id = wordId;
             for (Map.Entry<Inflection, String> entry : inflectedForms.entrySet()) {
                 inflectedFormList.add(new InflectedForm(
                         wordId, entry.getKey().getLabel(), entry.getValue()));
             }
             inflectionDao.insert(inflectedFormList);
+            new Handler(Looper.getMainLooper()).post(() ->
+                    callback.onLoaded(word));
+        });
+    }
+
+
+    public void deleteWord(Long wordId) {
+        AppDatabase.executor.execute(() -> {
+            wordDao.delete(new Word(wordId, "", 0L));
         });
     }
 }

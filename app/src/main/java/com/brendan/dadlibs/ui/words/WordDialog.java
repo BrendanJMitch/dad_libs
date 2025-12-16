@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.engine.PartOfSpeech;
-import com.brendan.dadlibs.entity.Word;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -23,49 +22,28 @@ import java.util.Objects;
 
 public class WordDialog {
 
-    public interface OnSaveListener {
+    public interface OnSaveCallback {
         void onSave(String word, Map<Inflection, String> inflectedForms);
     }
 
-    public interface OnInflectionUpdateCallback {
-        void onUpdate(Map<Inflection, String> inflections);
-    }
+    protected final Context context;
+    protected final WordsViewModel viewModel;
+    protected final Map<Inflection, TextInputEditText> inflectionInputs;
+    protected final Map<Inflection, TextInputLayout> inflectionLayouts;
+    protected final LayoutInflater inflater;
+    protected final AlertDialog dialog;
+    protected final TextInputEditText nameInput;
+    protected final TextInputLayout nameLayout;
+    protected final MaterialTextView inflectedFormsHeader;
+    protected final LinearLayout inflectedFormsLayout;
+    protected final OnSaveCallback onSaveCallback;
 
-    private final Context context;
-    private final WordsViewModel viewModel;
-    private final Map<Inflection, TextInputEditText> inflectionInputs;
-    private final Map<Inflection, TextInputLayout> inflectionLayouts;
-    private LayoutInflater inflater;
-    private final AlertDialog dialog;
-    private final TextInputEditText nameInput;
-    private final TextInputLayout nameLayout;
-    private final MaterialTextView inflectedFormsHeader;
-    private final LinearLayout inflectedFormsLayout;
-    private final OnSaveListener onSaveListener;
-    private final String title;
-
-    private boolean suppressTextWatcher = false;
-
-
-    public WordDialog(Context context, WordsViewModel viewModel, OnSaveListener onSaveListener, Word word) {
-        this(context, viewModel, context.getString(R.string.new_word), onSaveListener);
-        suppressTextWatcher = true;
-        nameInput.setText(word.word);
-        suppressTextWatcher = false;
-        viewModel.loadWordInflections(word, this::updateInflections);
-    }
-
-    public WordDialog(Context context, WordsViewModel viewModel, OnSaveListener onSaveListener) {
-        this(context, viewModel, context.getString(R.string.new_word), onSaveListener);
-    }
-
-    private WordDialog(Context context, WordsViewModel viewModel, String title, OnSaveListener onSaveListener) {
+    protected WordDialog(Context context, WordsViewModel viewModel, OnSaveCallback onSaveCallback) {
         this.context = context;
         this.viewModel = viewModel;
-        this.title = title;
         this.inflectionInputs = new HashMap<>();
         this.inflectionLayouts = new HashMap<>();
-        this.onSaveListener = onSaveListener;
+        this.onSaveCallback = onSaveCallback;
 
         inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_word, null);
@@ -75,8 +53,7 @@ public class WordDialog {
         nameInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (!suppressTextWatcher)
-                    viewModel.buildWordInflections(s.toString(), WordDialog.this::updateInflections);
+                textChanged(s);
             }
 
             @Override
@@ -91,24 +68,30 @@ public class WordDialog {
         dialog = getDialog(dialogView);
     }
 
-    private AlertDialog getDialog(View view){
+    protected AlertDialog getDialog(View view){
         AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(title)
+                .setTitle(context.getString(R.string.new_word))
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
 
-        dialog.setOnShowListener(dlg ->
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this::onSaveButtonPressed));
+        dialog.setOnShowListener(dlg -> {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this::onSaveButtonPressed);
+        });
+
         return dialog;
+    }
+
+    protected void textChanged(Editable s) {
+        viewModel.buildWordInflections(s.toString(), WordDialog.this::updateInflections);
     }
 
     public void show(){
         this.dialog.show();
     }
 
-    private void updateInflectionEntries(PartOfSpeech partOfSpeech){
+    protected void updateInflectionEntries(PartOfSpeech partOfSpeech){
         for (Inflection inflection : partOfSpeech.getNonBaseInflections()){
             View inputView = inflater.inflate(
                     R.layout.inflected_form_input,
@@ -134,13 +117,13 @@ public class WordDialog {
         }
     }
 
-    private void updateInflections(Map<Inflection, String> inflections){
+    protected void updateInflections(Map<Inflection, String> inflections){
         for (Map.Entry<Inflection, TextInputEditText> entry : inflectionInputs.entrySet()) {
             entry.getValue().setText(inflections.get(entry.getKey()));
         }
     }
 
-    private void onSaveButtonPressed(View v) {
+    protected void onSaveButtonPressed(View v) {
         boolean shouldDismiss = true;
         Editable word = nameInput.getText();
         if (word == null || word.toString().trim().isEmpty()) {
@@ -162,17 +145,16 @@ public class WordDialog {
                         entry.getKey().getDisplayName().toLowerCase()));
                 shouldDismiss = false;
             } else {
-
                 layout.setErrorEnabled(false);
             }
         }
         if (shouldDismiss){
-            onSaveListener.onSave(word.toString(), getInflectedForms());
+            onSaveCallback.onSave(word.toString(), getInflectedForms());
             dialog.dismiss();
         }
     }
 
-    private Map<Inflection, String> getInflectedForms(){
+    protected Map<Inflection, String> getInflectedForms(){
         Map<Inflection, String> inflectedForms = new HashMap<>();
         for (Map.Entry<Inflection, TextInputEditText> entry : inflectionInputs.entrySet()) {
             String text = Objects.requireNonNull(entry.getValue().getText()).toString();

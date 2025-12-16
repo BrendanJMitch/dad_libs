@@ -1,6 +1,5 @@
 package com.brendan.dadlibs.ui.words;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.engine.Inflection;
-import com.brendan.dadlibs.entity.InflectedForm;
 import com.brendan.dadlibs.entity.Word;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +44,11 @@ public class WordsFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(WordsViewModel.class);
 
         wordAdapter = new WordAdapter(word -> {
-            WordDialog.OnSaveListener listener = (String wordStr, Map<Inflection, String> inflectedForms) ->
+            WordDialog.OnSaveCallback saveCallback = (String wordStr, Map<Inflection, String> inflectedForms) ->
                     updateWord(word.id, wordStr, inflectedForms);
-            new WordDialog(requireContext(), viewModel, listener, word).show();
+            EditWordDialog.OnDeleteCallback deleteCallback = () ->
+                    deleteWord(word.id);
+            new EditWordDialog(requireContext(), viewModel, saveCallback, deleteCallback, word).show();
         });
         wordRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         wordRecycler.setAdapter(wordAdapter);
@@ -74,12 +73,16 @@ public class WordsFragment extends Fragment {
     private void saveWord(String word, Map<Inflection, String> inflectedForms){
         Word newWord = new Word(word, wordListId);
         wordAdapter.addWord(newWord);
-        viewModel.saveWord(newWord, inflectedForms);
+        viewModel.saveWord(newWord, inflectedForms, (w) -> {});
     }
 
     private void updateWord(Long wordID, String word, Map<Inflection, String> inflectedForms){
-        Word newWord = new Word(wordID, word, wordListId);
-        wordAdapter.updateWord(newWord);
-        viewModel.saveWord(newWord, inflectedForms);
+        viewModel.saveWord(new Word(wordID, word, wordListId), inflectedForms, (newWord) ->
+                wordAdapter.updateWord(newWord));
+    }
+
+    private void deleteWord(Long wordId){
+        wordAdapter.deleteWord(wordId);
+        viewModel.deleteWord(wordId);
     }
 }

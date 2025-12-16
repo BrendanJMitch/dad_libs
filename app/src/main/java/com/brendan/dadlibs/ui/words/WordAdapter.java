@@ -85,7 +85,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
 
     public void addWord(Word word){
         this.words.add(word);
-        notifyItemChanged(words.size() - 1);
+        notifyItemInserted(words.size() - 1);
     }
 
     public void updateWord(Word word) {
@@ -93,6 +93,16 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
             if (Objects.equals(words.get(i).id, word.id)) {
                 words.set(i, word);
                 notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    public void deleteWord(Long wordId) {
+        for (int i = 0; i < words.size(); i++) {
+            if (Objects.equals(words.get(i).id, wordId)) {
+                words.remove(i);
+                notifyItemRemoved(i);
                 break;
             }
         }
