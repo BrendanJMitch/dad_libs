@@ -49,7 +49,7 @@ public class BuiltinTemplates {
                             "revealed to be cursed too, having taken a ${noun 0 singular} from Cortez's chest. Captain ${person 2 " +
                             "singular} shoots Barbossa, with ${person 1 singular} revealing the curse has been lifted by adding the " +
                             "last ${noun 0 singular}, and Barbossa ${intransitive_verb 0 third_person_present}. A short time later, " +
-                            "${person 2 singular} is sentenced to be ${transitive_verb 1 past_participle} in public, but ${person 1 " +
+                            "${person 2 singular} is sentenced to be ${transitive_verb 2 past_participle} in public, but ${person 1 " +
                             "singular} attempts to rescue him. The two are captured, but when Elizabeth defends them both, Captain " +
                             "${person 2 singular} escapes aboard the Black ${noun 2 singular}. Governor ${person 0 singular} " +
                             "${transitive_verb 2 third_person_present} ${person 1 singular} and gives his blessing for Elizabeth to " +
