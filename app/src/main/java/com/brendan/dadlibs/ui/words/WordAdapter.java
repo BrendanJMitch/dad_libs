@@ -1,5 +1,6 @@
 package com.brendan.dadlibs.ui.words;
 
+import android.annotation.SuppressLint;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
             return 0;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setWords(List<Word> words){
         this.words = new ArrayList<>(words);
         notifyDataSetChanged();

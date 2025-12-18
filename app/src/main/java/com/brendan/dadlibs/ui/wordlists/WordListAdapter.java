@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.WrapperListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.brendan.dadlibs.entity.WordList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordListViewHolder> {
@@ -33,17 +35,17 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
         }
     }
 
-    public interface OnClickListener {
+    public interface WordListClickListener {
         void onCardClick(WordList wordList);
         void onMenuClick(View v, WordList wordList);
     }
 
     private final List<WordList> wordLists;
     private final Map<Long, String> previews;
-    private final OnClickListener onClickListener;
+    private final WordListClickListener wordListClickListener;
 
-    public WordListAdapter(OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
+    public WordListAdapter(WordListClickListener wordListClickListener) {
+        this.wordListClickListener = wordListClickListener;
         this.wordLists = new ArrayList<>();
         this.previews = new TreeMap<>();
     }
@@ -64,8 +66,8 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
         holder.title.setText(wordList.name);
         holder.preview.setText(previews.get(wordList.id));
 
-        holder.itemView.setOnClickListener(v -> onClickListener.onCardClick(wordList));
-        holder.menuButton.setOnClickListener(v -> onClickListener.onMenuClick(v, wordList));
+        holder.itemView.setOnClickListener(v -> wordListClickListener.onCardClick(wordList));
+        holder.menuButton.setOnClickListener(v -> wordListClickListener.onMenuClick(v, wordList));
     }
 
     @Override
@@ -76,6 +78,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
     public void addWordList(WordList wordList, String preview){
         this.wordLists.add(wordList);
         this.previews.put(wordList.id, preview);
+        notifyItemInserted(wordLists.size() - 1);
     }
 
     public void clear(){
@@ -84,6 +87,12 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordLi
     }
 
     public void removeWordList(WordList wordList){
-        this.wordLists.remove(wordList);
+        for (int i = 0; i < wordLists.size(); i++) {
+            if (Objects.equals(wordLists.get(i).id, wordList.id)) {
+                wordLists.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
     }
 }

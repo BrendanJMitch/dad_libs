@@ -72,8 +72,8 @@ public class WordsFragment extends Fragment {
 
     private void saveWord(String word, Map<Inflection, String> inflectedForms){
         Word newWord = new Word(word, wordListId);
-        wordAdapter.addWord(newWord);
-        viewModel.saveWord(newWord, inflectedForms, (w) -> {});
+        viewModel.saveWord(newWord, inflectedForms, (w) ->
+            wordAdapter.addWord(newWord));
     }
 
     private void updateWord(Long wordID, String word, Map<Inflection, String> inflectedForms){

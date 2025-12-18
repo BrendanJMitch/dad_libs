@@ -2,8 +2,6 @@ package com.brendan.dadlibs.ui.home;
 
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.engine.DadLibEngine;
 import com.brendan.dadlibs.entity.Template;
+import com.brendan.dadlibs.entity.Template;
+import com.brendan.dadlibs.entity.Template;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.TemplateViewHolder> {
 
@@ -49,16 +50,15 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
         }
     }
 
-    public interface OnTemplateClickListener {
-        void onClick(Template template);
+    public interface TemplateClickListener {
+        void onCardClick(Template template);
+        void onMenuClick(View v, Template template);
     }
 
     private List<Template> templates;
-    private final OnTemplateClickListener templateClickListener;
-    private final OnTemplateClickListener menuClickListener;
+    private final TemplateClickListener templateClickListener;
 
-    public TemplateAdapter(OnTemplateClickListener templateClickListener, OnTemplateClickListener menuClickListener) {
-        this.menuClickListener = menuClickListener;
+    public TemplateAdapter(TemplateClickListener templateClickListener) {
         this.templateClickListener = templateClickListener;
         this.templates = new ArrayList<>();
     }
@@ -79,8 +79,8 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
         holder.title.setText(template.name);
         holder.preview.setText(DadLibEngine.getPreview(template));
 
-        holder.itemView.setOnClickListener(v -> templateClickListener.onClick(template));
-        holder.menuButton.setOnClickListener(v -> menuClickListener.onClick(template));
+        holder.itemView.setOnClickListener(v -> templateClickListener.onCardClick(template));
+        holder.menuButton.setOnClickListener(v -> templateClickListener.onMenuClick(v, template));
     }
 
     @Override
@@ -93,6 +93,22 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
 
     public void setTemplates(List<Template> templates){
         this.templates = templates;
+        notifyDataSetChanged();
+    }
+
+    public void addTemplates(List<Template> templates){
+        this.templates.addAll(templates);
+        notifyItemRangeInserted(this.templates.size() - templates.size(), templates.size());
+    }
+
+    public void removeTemplate(Template template){
+        for (int i = 0; i < templates.size(); i++) {
+            if (Objects.equals(templates.get(i).id, template.id)) {
+                templates.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
     }
 
 }

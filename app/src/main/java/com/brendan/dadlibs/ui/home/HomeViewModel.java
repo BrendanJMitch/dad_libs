@@ -17,7 +17,7 @@ public class HomeViewModel extends AndroidViewModel {
     private final TemplateDao templateDao;
 
     public interface DataLoadedCallback {
-        public void onLoaded(List<Template> templates);
+        void onLoaded(List<Template> templates);
     }
 
     public HomeViewModel(Application application) {
@@ -30,5 +30,17 @@ public class HomeViewModel extends AndroidViewModel {
             List<Template> templates = templateDao.getAll();
             new Handler(Looper.getMainLooper()).post(() -> callback.onLoaded(templates));
         });
+    }
+
+    public void copyTemplate(Template original, String newName, DataLoadedCallback callback){
+        Template copy = new Template(newName, original.text);
+        AppDatabase.executor.execute(() -> {
+            copy.id = templateDao.insert(copy);
+            new Handler(Looper.getMainLooper()).post(() -> callback.onLoaded(List.of(copy)));
+        });
+    }
+
+    public void deleteTemplate(Template template){
+        AppDatabase.executor.execute(() -> templateDao.delete(template));
     }
 }

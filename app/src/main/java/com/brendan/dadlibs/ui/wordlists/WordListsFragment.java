@@ -34,7 +34,7 @@ public class WordListsFragment extends Fragment {
         FloatingActionButton newWordListButton = fragment.findViewById(R.id.new_word_list_button);
         RecyclerView wordListRecycler = fragment.findViewById(R.id.word_list_recycler);
 
-        wordListAdapter = new WordListAdapter(new WordListAdapter.OnClickListener() {
+        wordListAdapter = new WordListAdapter(new WordListAdapter.WordListClickListener() {
             @Override
             public void onCardClick(WordList wordList) {
                 openWordList(wordList);
@@ -102,7 +102,6 @@ public class WordListsFragment extends Fragment {
         popup.show();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void editWordList(WordList wordList){
         new WordListDialog(requireContext()).show(wordList, viewModel.isEmpty(wordList), (String name, PartOfSpeech partofSpeech) -> {
             wordList.partOfSpeech = partofSpeech.label;
@@ -112,8 +111,6 @@ public class WordListsFragment extends Fragment {
         });
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
     private void copyWordList(WordList wordList){
         viewModel.copyWordList(
                 wordList,
@@ -121,7 +118,6 @@ public class WordListsFragment extends Fragment {
                 this::onWordListsLoaded);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void deleteWordList(WordList wordList) {
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         View dialogView = inflater.inflate(R.layout.dialog_delete, null);
@@ -135,7 +131,6 @@ public class WordListsFragment extends Fragment {
                 .setPositiveButton("Delete", (dialog, which) -> {
                     viewModel.deleteWordList(wordList);
                     wordListAdapter.removeWordList(wordList);
-                    wordListAdapter.notifyDataSetChanged();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();

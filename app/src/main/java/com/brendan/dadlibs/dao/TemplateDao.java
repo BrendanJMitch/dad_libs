@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface TemplateDao {
     @Insert
-    void insert(Template template);
+    long insert(Template template);
     @Insert
     void insert(List<Template> template);
     @Update
