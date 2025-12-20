@@ -31,4 +31,6 @@
     <string name="template_editor">Template Edtitor</string>
     <string name="template_title">Title</string>
     <string name="signature">By Brendan Mitchell</string>
+    <string name="initializing">Initializing...</string>
+    <string name="dadlibs_logo">DadLibs Logo</string>
 </resources>

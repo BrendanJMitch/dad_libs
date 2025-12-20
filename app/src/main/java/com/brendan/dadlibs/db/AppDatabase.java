@@ -34,8 +34,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TemplateDao templateDao();
     public abstract SavedStoryDao savedStoryDao();
     public abstract InflectionDao inflectionDao();
-
     private static volatile AppDatabase INSTANCE;
+
 
     public static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
@@ -44,29 +44,31 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(
                             context.getApplicationContext(),
                             AppDatabase.class, "app_database.db"
-                    ).addCallback(
-                            new Callback() {
-                                @Override
-                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                                    super.onCreate(db);
+                    ).addCallback(new Callback() {
+                            @Override
+                            public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                super.onCreate(db);
 
-                                    executor.execute(() -> {
-                                        AppDatabase appDb = getDatabase(context);
+                                executor.execute(() -> {
+                                    List<Template> templates = PreLoader.loadTemplates(context);
+                                    INSTANCE.templateDao().insert(templates);
 
-                                        List<Template> templates = PreLoader.loadTemplates(context);
-                                        appDb.templateDao().insert(templates);
+                                    List<WordList> lists = PreLoader.loadWordLists(context);
+                                    INSTANCE.wordListDao().insert(lists);
 
-                                        List<WordList> lists = PreLoader.loadWordLists(context);
-                                        appDb.wordListDao().insert(lists);
+                                    List<Word> words = PreLoader.loadWords(context);
+                                    INSTANCE.wordDao().insert(words);
 
-                                        List<Word> words = PreLoader.loadWords(context);
-                                        appDb.wordDao().insert(words);
+                                    List<InflectedForm> inflectedForms = PreLoader.loadInflectedForms(context);
+                                    INSTANCE.inflectionDao().insert(inflectedForms);
 
-                                        List<InflectedForm> inflectedForms = PreLoader.loadInflectedForms(context);
-                                        appDb.inflectionDao().insert(inflectedForms);
-                                    });
-                                }
-                            }).build();
+                                    context.getSharedPreferences("app", Context.MODE_PRIVATE)
+                                            .edit()
+                                            .putBoolean("initialized", true)
+                                            .apply();
+                                });
+                            }
+                        }).build();
                 }
             }
         }

@@ -7,7 +7,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/ic_launcher_foreground"
+        android:contentDescription="@string/dadlibs_logo"
+        android:src="@drawable/logo_full"
         android:scaleType="centerCrop"/>
     
     <LinearLayout

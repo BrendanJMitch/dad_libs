@@ -1,4 +1,4 @@
-package com.brendan.dadlibs;
+package com.brendan.dadlibs.ui.main;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
