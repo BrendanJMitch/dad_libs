@@ -43,17 +43,15 @@ public class PlaceholderSpan extends ReplacementSpan {
         float lineEnd = x + paint.measureText(label) + padding * 2f;
 
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2f);   // pixels
+        paint.setStrokeWidth(2f);
         paint.setColor(lineColor);
 
         canvas.drawLine(lineStart, bottom, lineEnd, bottom, paint);
 
-        // Draw text centered vertically
         paint.setColor(textColor);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawText(label, x + padding, y, paint);
 
-        // Restore paint
         paint.setColor(oldColor);
     }
 }

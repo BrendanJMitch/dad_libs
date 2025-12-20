@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
         });
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        templateAdapter = new TemplateAdapter(new TemplateAdapter.TemplateClickListener() {
+        templateAdapter = new TemplateAdapter(viewModel, new TemplateAdapter.TemplateClickListener() {
             @Override
             public void onCardClick(Template template) { launchStory(template); }
 

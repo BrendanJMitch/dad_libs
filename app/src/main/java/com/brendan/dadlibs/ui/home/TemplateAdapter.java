@@ -3,6 +3,9 @@ package com.brendan.dadlibs.ui.home;
 import android.annotation.SuppressLint;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.engine.DadLibEngine;
-import com.brendan.dadlibs.entity.Template;
-import com.brendan.dadlibs.entity.Template;
 import com.brendan.dadlibs.entity.Template;
 
 import java.util.ArrayList;
@@ -58,8 +58,10 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
 
     private List<Template> templates;
     private final TemplateClickListener templateClickListener;
+    private final HomeViewModel viewModel;
 
-    public TemplateAdapter(TemplateClickListener templateClickListener) {
+    public TemplateAdapter(HomeViewModel viewModel, TemplateClickListener templateClickListener) {
+        this.viewModel = viewModel;
         this.templateClickListener = templateClickListener;
         this.templates = new ArrayList<>();
     }
@@ -78,7 +80,7 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
         Template template = templates.get(index);
 
         holder.title.setText(template.name);
-        holder.preview.setText(DadLibEngine.getPreview(template));
+        holder.preview.setText(getPreview(template.text, holder.preview.getCurrentTextColor()));
 
         holder.itemView.setOnClickListener(v -> templateClickListener.onCardClick(template));
         holder.menuButton.setOnClickListener(v -> templateClickListener.onMenuClick(v, template));
@@ -111,6 +113,18 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
                 break;
             }
         }
+    }
+
+    private CharSequence getPreview(String template, int color){
+        List<Pair<Integer, Integer>> blanks = viewModel.getBlankIndices(template);
+        SpannableStringBuilder builder = new SpannableStringBuilder(template);
+        for (Pair<Integer, Integer> blank : blanks) {
+            builder.setSpan(
+                    new BlankSpan(color),
+                    blank.first, blank.first + blank.second,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return builder;
     }
 
 }

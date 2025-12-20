@@ -1,5 +1,7 @@
 package com.brendan.dadlibs.engine;
 
+import android.util.Pair;
+
 import com.brendan.dadlibs.entity.SavedStory;
 import com.brendan.dadlibs.entity.Template;
 import com.brendan.dadlibs.entity.Word;
@@ -52,37 +54,6 @@ public class DadLibEngine {
         return new SavedStory(template.name, template.id, text, null, null);
     }
 
-    public SavedStory create2(Template template){
-        shuffleWords();
-
-        Matcher matcher = markerPattern.matcher(template.text);
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
-            String[] tokens = matcher.group(1).split(" ");
-            String listIdentifier = tokens[0];
-            String inflectionType = tokens[2];
-            // TODO: See below
-            Word word = null;
-            try {
-                int index = Integer.parseInt(tokens[1]);
-                word = randomWords.get(listIdentifier).get(index);
-                String replacement = inflector.getInflection(word, inflectionType);
-                matcher.appendReplacement(sb, replacement);
-            } catch (Exception e) {
-                // TODO: This is a temporary measure to catch an intermittent bug. Once that gets
-                //  fixed, remove this!
-                throw new RuntimeException(String.format("Failed to fetch %s form of %s from the list %s.", inflectionType, word.word, listIdentifier));
-                //matcher.appendReplacement(sb, "(unknown word type)");
-            }
-        }
-        matcher.appendTail(sb);
-        return new SavedStory(template.name, template.id, sb.toString(), null, null);
-    }
-
-    public static String getPreview(Template template){
-        String fillInTheBlank = " \u0332 \u0332 \u0332 \u0332 \u0332";
-        return template.text.replaceAll(markerPattern.toString(), fillInTheBlank);
-    }
 
     public Replacement getNextReplacement(String template){
         Matcher matcher = markerPattern.matcher(template);
@@ -122,6 +93,17 @@ public class DadLibEngine {
                 text.substring(replacement.startPos + replacement.length);
     }
 
+    public static List<Pair<Integer, Integer>> getAllReplacementIndices(String template){
+        List<Pair<Integer, Integer>> replacements = new ArrayList<>();
+        Matcher matcher = markerPattern.matcher(template);
+
+        while (matcher.find()) {
+            replacements.add(new Pair<>(
+                    matcher.start(), matcher.end() - matcher.start()));
+        }
+        return replacements;
+    }
+
     private Placeholder getPlaceholder(String placeholderString){
         String[] tokens = placeholderString.split(" ");
         try {
@@ -133,6 +115,7 @@ public class DadLibEngine {
             return null;
         }
     }
+
     private void shuffleWords(){
         for (List<Word> randomWordList : randomWords.values()){
             Collections.shuffle(randomWordList);
