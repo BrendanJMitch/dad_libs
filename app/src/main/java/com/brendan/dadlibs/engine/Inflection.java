@@ -1,5 +1,9 @@
 package com.brendan.dadlibs.engine;
 
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.TreeMap;
+
 public enum Inflection {
     SINGULAR("singular", "Singular", "N;SG"),
     PLURAL("plural", "Plural", "N;PL"),
@@ -21,7 +25,17 @@ public enum Inflection {
     private final String label;
     private final String unimorphModifiers;
     private final String displayName;
+    private static final Map<String, Inflection> labelMap = new TreeMap<>();
 
+    static {
+        for (Inflection p : EnumSet.allOf(Inflection.class)){
+            labelMap.put(p.label, p);
+        }
+    }
+
+    public static Inflection getByLabel(String label){
+        return labelMap.get(label);
+    }
     Inflection(String label, String displayName, String unimorphModifiers){
         this.label = label;
         this.displayName = displayName;

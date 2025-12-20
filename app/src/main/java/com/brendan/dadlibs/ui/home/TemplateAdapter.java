@@ -1,5 +1,6 @@
 package com.brendan.dadlibs.ui.home;
 
+import android.annotation.SuppressLint;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.view.LayoutInflater;
@@ -91,6 +92,7 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
             return 0;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setTemplates(List<Template> templates){
         this.templates = templates;
         notifyDataSetChanged();
