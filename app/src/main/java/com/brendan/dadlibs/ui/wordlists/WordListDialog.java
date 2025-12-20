@@ -62,7 +62,7 @@ public class WordListDialog {
         nameInput.setText(wordListName);
         posLayout.setEnabled(posEnabled);
         posLayout.setHelperTextEnabled(!posEnabled);
-        posDropdown.setText(posName);
+        posDropdown.setText(posName, false);
 
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(title)
