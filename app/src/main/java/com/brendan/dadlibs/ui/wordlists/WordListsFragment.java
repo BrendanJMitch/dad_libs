@@ -49,8 +49,8 @@ public class WordListsFragment extends Fragment {
         wordListRecycler.setAdapter(wordListAdapter);
 
         newWordListButton.setOnClickListener(v -> {
-            new WordListDialog(requireContext()).show((String name, PartOfSpeech partofSpeech) -> {
-                WordList wordList = new WordList(name, false, partofSpeech.label);
+            new WordListDialog(requireContext()).show((String name, String singularName, PartOfSpeech partofSpeech) -> {
+                WordList wordList = new WordList(name, singularName, false, partofSpeech.label);
                 viewModel.insertWordList(wordList, this::onWordListsLoaded);
             });
         });
@@ -103,18 +103,21 @@ public class WordListsFragment extends Fragment {
     }
 
     private void editWordList(WordList wordList){
-        new WordListDialog(requireContext()).show(wordList, viewModel.isEmpty(wordList), (String name, PartOfSpeech partofSpeech) -> {
-            wordList.partOfSpeech = partofSpeech.label;
-            wordList.name = name;
-            wordListAdapter.notifyDataSetChanged();
-            viewModel.updateWordList(wordList);
-        });
+        new WordListDialog(requireContext()).show(wordList, viewModel.isEmpty(wordList),
+                (String name, String singularName, PartOfSpeech partofSpeech) -> {
+                    wordList.partOfSpeech = partofSpeech.label;
+                    wordList.name = name;
+                    wordList.singularName = singularName;
+                    wordListAdapter.notifyDataSetChanged();
+                    viewModel.updateWordList(wordList);
+                });
     }
 
     private void copyWordList(WordList wordList){
         viewModel.copyWordList(
                 wordList,
                 String.format("%s (copy)", wordList.name),
+                String.format("%s (copy)", wordList.singularName),
                 this::onWordListsLoaded);
     }
 

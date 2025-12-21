@@ -12,14 +12,13 @@ import androidx.appcompat.app.AlertDialog;
 import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.entity.WordList;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class WordListDialog {
 
     public interface OnSaveListener{
-        void onSave(String name, PartOfSpeech partOfSpeech);
+        void onSave(String name, String singularName, PartOfSpeech partOfSpeech);
     }
 
     private final Context context;
@@ -29,13 +28,14 @@ public class WordListDialog {
     }
 
     public void show(OnSaveListener onSaveListener){
-        getDialog(context.getString(R.string.new_word_list), "", null, true, onSaveListener).show();
+        getDialog(context.getString(R.string.new_word_list), "", "", null, true, onSaveListener).show();
     }
 
     public void show(WordList wordList, boolean editPosEnabled, OnSaveListener onSaveListener){
         getDialog(
                 context.getString(R.string.edit_word_list),
                 wordList.name,
+                wordList.singularName,
                 PartOfSpeech.getByLabel(wordList.partOfSpeech).toString(),
                 editPosEnabled,
                 onSaveListener
@@ -43,13 +43,16 @@ public class WordListDialog {
     }
 
     private AlertDialog getDialog(
-            String title, String wordListName, String posName, boolean posEnabled, OnSaveListener onSaveListener) {
+            String title, String wordListName, String wordListSingularName, String posName,
+            boolean posEnabled, OnSaveListener onSaveListener) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_word_list, null);
 
         TextInputLayout nameLayout = dialogView.findViewById(R.id.word_list_name_layout);
         TextInputEditText nameInput = dialogView.findViewById(R.id.name_input);
+        TextInputLayout singularNameLayout = dialogView.findViewById(R.id.word_list_singular_name_layout);
+        TextInputEditText singularNameInput = dialogView.findViewById(R.id.singular_name_input);
         TextInputLayout posLayout = dialogView.findViewById(R.id.part_of_speech_layout);
         AutoCompleteTextView posDropdown = dialogView.findViewById(R.id.part_of_speech_dropdown);
 
@@ -60,6 +63,7 @@ public class WordListDialog {
         );
         posDropdown.setAdapter(adapter);
         nameInput.setText(wordListName);
+        singularNameInput.setText(wordListSingularName);
         posLayout.setEnabled(posEnabled);
         posLayout.setHelperTextEnabled(!posEnabled);
         posDropdown.setText(posName, false);
@@ -74,6 +78,7 @@ public class WordListDialog {
         dialog.setOnShowListener(dlg -> {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
                 Editable name = nameInput.getText();
+                Editable singularName = singularNameInput.getText();
                 Editable posText = posDropdown.getText();
                 boolean shouldDismiss = true;
                 if (name == null || name.toString().trim().isEmpty()) {
@@ -83,6 +88,13 @@ public class WordListDialog {
                 } else {
                     nameLayout.setErrorEnabled(false);
                 }
+                if (singularName == null || singularName.toString().trim().isEmpty()) {
+                    singularNameLayout.setErrorEnabled(true);
+                    singularNameLayout.setError("Please specify a name for placeholders!");
+                    shouldDismiss = false;
+                } else {
+                    singularNameLayout.setErrorEnabled(false);
+                }
                 if (posText == null || PartOfSpeech.getByDisplayName(posText.toString()) == null) {
                     posLayout.setErrorEnabled(true);
                     posLayout.setError("Please select part of speech!");
@@ -91,7 +103,9 @@ public class WordListDialog {
                     posLayout.setErrorEnabled(false);
                 }
                 if (shouldDismiss){
-                    onSaveListener.onSave(name.toString().trim(), PartOfSpeech.getByDisplayName(posText.toString()));
+                    onSaveListener.onSave(name.toString().trim(),
+                            singularName.toString().trim(),
+                            PartOfSpeech.getByDisplayName(posText.toString()));
                     dialog.dismiss();
                 }
             });

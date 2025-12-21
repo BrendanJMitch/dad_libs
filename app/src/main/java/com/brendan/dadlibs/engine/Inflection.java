@@ -11,7 +11,7 @@ public enum Inflection {
     PLURAL_POSSESSIVE("plural_possessive", "Plural Possessive", ""),
 
     PRESENT("present", "Present", "V;NFIN;IMP+SBJV"),
-    THIRD_PERSON_PRESENT("third_person_present", "Third-person Present", "V;PRS;3;SG"),
+    THIRD_PERSON_PRESENT("third_person_present", "3rd-person Present", "V;PRS;3;SG"),
     SIMPLE_PAST("simple_past", "Simple Past", "V;PST"),
     PRESENT_PARTICIPLE("present_participle", "Present Participle", "V;V.PTCP;PRS"),
     PAST_PARTICIPLE("past_participle", "Past Participle", "V;V.PTCP;PST"),

@@ -65,7 +65,7 @@ public class EditorFragment extends Fragment {
 
     public String getDisplayString(Placeholder placeholder){
         return String.format(Locale.US, "%s %d %s",
-                placeholder.wordList.name,
+                placeholder.wordList.singularName,
                 placeholder.index,
                 placeholder.inflection.getDisplayName());
     }

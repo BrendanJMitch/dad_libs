@@ -49,8 +49,8 @@ public class WordListsViewModel extends AndroidViewModel {
         AppDatabase.executor.execute(() -> wordListDao.update(wordList));
     }
 
-    public void copyWordList(WordList original, String newName, DataLoadedCallback callback){
-        WordList copy = new WordList(newName, false, original.partOfSpeech);
+    public void copyWordList(WordList original, String newName, String newSingularName, DataLoadedCallback callback){
+        WordList copy = new WordList(newName, newSingularName, false, original.partOfSpeech);
         AppDatabase.executor.execute(() -> {
             long newId = wordListDao.insert(copy);
             List<Word> words = wordDao.getAllFromList(original.id);

@@ -33,4 +33,5 @@
     <string name="signature">By Brendan Mitchell</string>
     <string name="initializing">Initializing...</string>
     <string name="dadlibs_logo">DadLibs Logo</string>
+    <string name="word_list_singular_name">Placeholder name</string>
 </resources>

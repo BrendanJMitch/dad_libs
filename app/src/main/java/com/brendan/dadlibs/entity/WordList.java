@@ -19,26 +19,31 @@ public class WordList {
     @NonNull
     public String name;
     @NonNull
+    public String singularName;
+    @NonNull
     public String marker;
     @NonNull
     public Boolean isBuiltin;
     public String partOfSpeech;
 
-    public WordList(@NonNull Long id, @NonNull String name, @NonNull String marker,
-                    @NonNull Boolean isBuiltin, String partOfSpeech){
+    public WordList(@NonNull Long id, @NonNull String name, @NonNull String singularName,
+                    @NonNull String marker, @NonNull Boolean isBuiltin, String partOfSpeech){
         this.id = id;
         this.name = name;
         this.marker = marker;
         this.partOfSpeech = partOfSpeech;
         this.isBuiltin = isBuiltin;
+        this.singularName = singularName;
     }
 
     @Ignore
-    public WordList(@NonNull String name, @NonNull Boolean isBuiltin, String partOfSpeech){
+    public WordList(@NonNull String name, @NonNull String singularName, @NonNull Boolean isBuiltin,
+                    String partOfSpeech){
         this.name = name;
         this.partOfSpeech = partOfSpeech;
         this.isBuiltin = isBuiltin;
         this.marker = generateMarker(name);
+        this.singularName = singularName;
     }
 
     public String getMarkerString(int index, Inflection inflection){

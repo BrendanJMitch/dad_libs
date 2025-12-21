@@ -22,6 +22,22 @@
             android:background="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Singular Name -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        android:id="@+id/word_list_singular_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:hint="@string/word_list_singular_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/singular_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <!-- Part of Speech Dropdown -->
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
