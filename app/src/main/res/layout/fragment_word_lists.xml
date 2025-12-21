@@ -13,7 +13,6 @@
         android:clipToPadding="false"
         android:paddingBottom="130dp" />
 
-    <!-- FAB floats over top of content -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/new_word_list_button"
         android:layout_width="wrap_content"

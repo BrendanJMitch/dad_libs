@@ -52,8 +52,8 @@ public class BuiltinTemplates {
                             "${person 2 singular} is sentenced to be ${transitive_verb 2 past_participle} in public, but ${person 1 " +
                             "singular} attempts to rescue him. The two are captured, but when Elizabeth defends them both, Captain " +
                             "${person 2 singular} escapes aboard the Black ${noun 2 singular}. Governor ${person 0 singular} " +
-                            "${transitive_verb 2 third_person_present} ${person 1 singular} and gives his blessing for Elizabeth to " +
-                            "${transitive_verb 3 present} him. "
+                            "${transitive_verb 3 third_person_present} ${person 1 singular} and gives his blessing for Elizabeth to " +
+                            "${transitive_verb 4 present} him. "
             ),
             new Template(
                     "Fablehaven",

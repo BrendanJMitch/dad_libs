@@ -34,4 +34,7 @@
     <string name="initializing">Initializing...</string>
     <string name="dadlibs_logo">DadLibs Logo</string>
     <string name="word_list_singular_name">Placeholder name</string>
+    <string name="editor_text_hint">Compose your Dad Lib story here...</string>
+    <string name="new_placeholder">Add placeholder</string>
+    <string name="close">Close</string>
 </resources>

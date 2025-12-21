@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/placeholder_chip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="18sp"
+    android:text="Adjective"
+    android:textColor="@color/white"
+    app:chipBackgroundColor="?attr/colorSecondaryVariant"
+    app:chipMinHeight="40dp"
+    app:chipStartPadding="16dp"
+    app:chipEndPadding="16dp"/>

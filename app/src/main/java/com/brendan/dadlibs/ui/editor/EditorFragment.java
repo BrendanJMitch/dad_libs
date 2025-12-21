@@ -24,6 +24,10 @@ public class EditorFragment extends Fragment {
     private EditorViewModel viewModel;
     private TextInputEditText titleInput;
     private TextInputEditText textInput;
+    private View insertPlaceholderMenu;
+    private View addPlaceholderButton;
+    private View closeMenuButton;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,9 @@ public class EditorFragment extends Fragment {
         View fragment = inflater.inflate(R.layout.fragment_editor, container, false);
         titleInput = fragment.findViewById(R.id.template_title_input);
         textInput = fragment.findViewById(R.id.template_text_input);
+        insertPlaceholderMenu = fragment.findViewById(R.id.insert_menu);
+        addPlaceholderButton = fragment.findViewById(R.id.new_placeholder_button);
+        closeMenuButton = fragment.findViewById(R.id.close_insert_menu);
         return fragment;
     }
 
@@ -46,6 +53,10 @@ public class EditorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(EditorViewModel.class);
+
+        addPlaceholderButton.setOnClickListener(v -> showInsertMenu());
+        closeMenuButton.setOnClickListener(v -> hideInsertMenu());
+
         if (templateId == null)
             return;
         viewModel.loadTemplate(templateId, template -> {
@@ -68,6 +79,19 @@ public class EditorFragment extends Fragment {
                 placeholder.wordList.singularName,
                 placeholder.index,
                 placeholder.inflection.getDisplayName());
+    }
+
+    private void showInsertMenu() {
+        if (insertPlaceholderMenu.getVisibility() == View.VISIBLE)
+            return;
+
+        insertPlaceholderMenu.setVisibility(View.VISIBLE);
+        addPlaceholderButton.setVisibility(View.GONE);
+    }
+
+    private void hideInsertMenu() {
+        insertPlaceholderMenu.setVisibility(View.GONE);
+        addPlaceholderButton.setVisibility(View.VISIBLE);
     }
 
 

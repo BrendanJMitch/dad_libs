@@ -48,8 +48,8 @@
         <!-- Checkbox -->
         <ImageView
             android:id="@+id/template_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/template_menu"
             android:src="@drawable/triple_dot_menu"
             android:scaleType="centerInside"/>
