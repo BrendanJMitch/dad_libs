@@ -17,6 +17,7 @@ import com.brendan.dadlibs.entity.WordList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class EditorViewModel extends AndroidViewModel {
 
@@ -51,6 +52,13 @@ public class EditorViewModel extends AndroidViewModel {
                 isInitialized = true;
             }
             replacements = engine.getAllReplacements(template.text);
+        });
+    }
+
+    public void loadWordLists(@NonNull Consumer<List<WordList>> callback) {
+        AppDatabase.executor.execute(() -> {
+            List<WordList> options = wordListDao.getAll();
+            new Handler(Looper.getMainLooper()).post(() -> callback.accept(options));
         });
     }
 
