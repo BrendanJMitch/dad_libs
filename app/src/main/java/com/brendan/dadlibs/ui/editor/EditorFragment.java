@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,6 +57,7 @@ public class EditorFragment extends Fragment {
         View fragment = inflater.inflate(R.layout.fragment_editor, container, false);
         titleInput = fragment.findViewById(R.id.template_title_input);
         textInput = fragment.findViewById(R.id.template_text_input);
+        setPartTextFactories(textInput);
         insertPlaceholderGroup = fragment.findViewById(R.id.insert_placeholder_group);
         insertPlaceholderMenu = fragment.findViewById(R.id.insert_menu);
         addPlaceholderButton = fragment.findViewById(R.id.new_placeholder_button);
@@ -166,7 +168,6 @@ public class EditorFragment extends Fragment {
         if (start >= 0 && end >= 0) {
             textInput.setSelection(start, end);
         }
-
     }
 
     private void hideKeyboard() {
@@ -195,4 +196,27 @@ public class EditorFragment extends Fragment {
         return insets != null && insets.isVisible(WindowInsetsCompat.Type.ime());
     }
 
+    /**
+     * This is a hack to overcome a performance issue that comes from using an EditText with more
+     * than a few Spans in it. See
+     * <a href="https://rsookram.github.io/2016/04/15/slow-textview-is-slow.html">this article</a>
+     * for details of the problem and the workaround implemented here.
+     *
+     * @param editText: the EditText need
+     */
+    private void setPartTextFactories(EditText editText) {
+
+        editText.setEditableFactory(new Editable.Factory() {
+            @Override
+            public Editable newEditable(CharSequence source) {
+                return new EditorSpannableStringBuilder(source);
+            }
+        });
+        editText.setSpannableFactory(new Spannable.Factory() {
+            @Override
+            public Spannable newSpannable(CharSequence source) {
+                return new EditorSpannableStringBuilder(source);
+            }
+        });
+    }
 }
