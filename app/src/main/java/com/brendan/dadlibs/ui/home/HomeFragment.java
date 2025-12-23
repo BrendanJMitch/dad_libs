@@ -18,10 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.entity.Template;
-
-import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -34,8 +31,10 @@ public class HomeFragment extends Fragment {
         View fragment = inflater.inflate(R.layout.fragment_home, container, false);
         templateRecycler = fragment.findViewById(R.id.template_recycler);
         fragment.findViewById(R.id.new_template_button).setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putLong("template_id", -1);
             NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_homeFragment_to_editorFragment);
+                    .navigate(R.id.action_homeFragment_to_editorFragment, args);
         });
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 

@@ -72,8 +72,6 @@ public class EditorFragment extends Fragment {
         closeMenuButton.setOnClickListener(v -> exitInsertMode());
         viewModel.loadWordLists(this::populateInsertMenu);
 
-        if (templateId == null)
-            return;
         viewModel.loadTemplate(templateId, template -> {
             titleInput.setText(template.name);
             SpannableStringBuilder builder = new SpannableStringBuilder(template.text);

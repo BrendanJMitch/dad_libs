@@ -41,6 +41,12 @@ public class EditorViewModel extends AndroidViewModel {
     }
 
     public void loadTemplate(long templateId, TemplateLoadedCallback callback){
+        if (templateId < 0){
+            template = new Template("", "");
+            replacements = new ArrayList<>();
+            callback.onLoaded(template);
+            return;
+        }
         AppDatabase.executor.execute(() -> {
             template = templateDao.getById(templateId);
             new Handler(Looper.getMainLooper()).post(() ->
