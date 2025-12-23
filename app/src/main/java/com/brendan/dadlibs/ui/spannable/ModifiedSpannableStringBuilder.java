@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.text;
+package com.brendan.dadlibs.ui.spannable;
 
+import android.text.Editable;
+import android.text.GetChars;
+import android.text.InputFilter;
+import android.text.NoCopySpan;
+import android.text.Selection;
+import android.text.SpanWatcher;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 
-import com.android.internal.util.ModifiedGrowingArrayUtils;
-import com.android.internal.util.ModifiedArrayUtils;
-
 import java.lang.reflect.Array;
-
-import libcore.util.ModifiedEmptyArray;
 
 /**
  * This is a copy of {@link SpannableStringBuilder} from API level 22. The API

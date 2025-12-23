@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.internal.util;
-
-import android.text.ModifiedSpannableStringBuilder;
+package com.brendan.dadlibs.ui.spannable;
 
 import java.lang.reflect.Array;
-
-import libcore.util.ModifiedEmptyArray;
 
 /**
  * ModifiedArrayUtils contains some methods that you can call to find out

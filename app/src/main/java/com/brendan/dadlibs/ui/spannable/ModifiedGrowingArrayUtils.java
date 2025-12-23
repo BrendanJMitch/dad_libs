@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.internal.util;
-
-import android.text.ModifiedSpannableStringBuilder;
+package com.brendan.dadlibs.ui.spannable;
 
 /**
  * A helper class that aims to provide comparable growth performance to ArrayList, but on primitive

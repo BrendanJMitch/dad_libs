@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package libcore.util;
-
-import android.text.ModifiedSpannableStringBuilder;
+package com.brendan.dadlibs.ui.spannable;
 
 /**
  * Used for {@link ModifiedSpannableStringBuilder}

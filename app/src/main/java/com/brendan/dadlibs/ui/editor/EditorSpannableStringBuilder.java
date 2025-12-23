@@ -1,6 +1,6 @@
 package com.brendan.dadlibs.ui.editor;
 
-import android.text.ModifiedSpannableStringBuilder;
+import com.brendan.dadlibs.ui.spannable.ModifiedSpannableStringBuilder;
 
 /**
  * Custom mutable {@link android.text.Spanned} which uses hacks to improve
