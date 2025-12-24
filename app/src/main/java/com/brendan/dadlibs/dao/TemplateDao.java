@@ -3,6 +3,7 @@ package com.brendan.dadlibs.dao;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -12,12 +13,10 @@ import java.util.List;
 
 @Dao
 public interface TemplateDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Template template);
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Template> template);
-    @Update
-    void update(Template template);
     @Delete
     void delete(Template template);
 

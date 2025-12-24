@@ -37,4 +37,5 @@
     <string name="editor_text_hint">Compose your Dad Lib story here...</string>
     <string name="new_placeholder">Add placeholder</string>
     <string name="close">Close</string>
+    <string name="done">Done</string>
 </resources>

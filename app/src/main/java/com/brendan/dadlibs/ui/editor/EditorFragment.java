@@ -7,25 +7,30 @@ import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.MenuProvider;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.brendan.dadlibs.R;
 import com.brendan.dadlibs.engine.Placeholder;
 import com.brendan.dadlibs.engine.Replacement;
+import com.brendan.dadlibs.entity.Template;
 import com.brendan.dadlibs.entity.WordList;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -56,7 +61,6 @@ public class EditorFragment extends Fragment {
         requireContext().getTheme().resolveAttribute(
                 com.google.android.material.R.attr.colorSecondaryVariant, tv, true);
         this.placeholderColor = tv.data;
-
         if (getArguments() != null) {
             templateId = getArguments().getLong("template_id");
         }
@@ -74,34 +78,45 @@ public class EditorFragment extends Fragment {
         return fragment;
     }
 
+    MenuProvider menuProvider = new MenuProvider() {
+        @Override
+        public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+            inflater.inflate(R.menu.menu_editor_app_bar, menu);
+        }
+
+        @Override
+        public boolean onMenuItemSelected(@NonNull MenuItem item) {
+            if (item.getItemId() == R.id.action_done) {
+                saveButtonPressed();
+                return true;
+            } else if (item.getItemId() == android.R.id.home){
+                backArrowPressed();
+                return true;
+            }
+            return false;
+        }
+    };
+
+    OnBackPressedCallback backPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            backArrowPressed();
+        }
+    };
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner());
+        requireActivity().getOnBackPressedDispatcher().addCallback(
+                getViewLifecycleOwner(), backPressedCallback);
         viewModel = new ViewModelProvider(this).get(EditorViewModel.class);
 
         addPlaceholderButton.setOnClickListener(v -> toInsertMode());
         closeMenuButton.setOnClickListener(v -> exitInsertMode());
         viewModel.loadWordLists(this::populateInsertMenu);
 
-        viewModel.loadTemplate(templateId, template -> {
-            titleInput.setText(template.name);
-            SpannableStringBuilder builder = new SpannableStringBuilder(template.text);
-
-            for (Replacement replacement : viewModel.getAllReplacements(template.text)) {
-                builder.setSpan(
-                        new PlaceholderSpan(getDisplayText(replacement.placeholder), placeholderColor),
-                        replacement.startPos, replacement.startPos + replacement.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                builder.setSpan(
-                        new PlaceholderClickSpan(
-                                replacement.placeholder, this::onPlaceholderClick, this::onPlaceholderInsertClick),
-                        replacement.startPos, replacement.startPos + replacement.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
-            textInput.setText(builder);
-            textInput.setSelection(builder.length());
-        });
+        viewModel.loadTemplate(templateId, this::onTemplateLoaded);
         textInput.setMovementMethod(new ClickOnlyMovementMethod());
         textInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -114,15 +129,46 @@ public class EditorFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
+        titleInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.setTemplateName(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     private void textChanged(Editable s) {
         viewModel.setTemplateText(s.toString());
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    private void onTemplateLoaded(Template template){
+        titleInput.setText(template.name);
+        SpannableStringBuilder builder = new SpannableStringBuilder(template.text);
+
+        for (Replacement replacement : viewModel.getAllReplacements(template.text)) {
+            builder.setSpan(
+                    new PlaceholderSpan(getDisplayText(replacement.placeholder), placeholderColor),
+                    replacement.startPos, replacement.startPos + replacement.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(
+                    new PlaceholderClickSpan(
+                            replacement.placeholder, this::onPlaceholderClick, this::onPlaceholderInsertClick),
+                    replacement.startPos, replacement.startPos + replacement.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        textInput.setText(builder);
+        textInput.setSelection(builder.length());
     }
 
     private String getDisplayText(Placeholder placeholder){
@@ -186,6 +232,20 @@ public class EditorFragment extends Fragment {
         forceRedraw();
     }
 
+    private void saveButtonPressed(){
+        viewModel.setTemplateName(titleInput.getText().toString());
+        viewModel.saveTemplate();
+        navigateBack();
+    }
+
+    private void backArrowPressed(){
+        if (viewModel.hasUnsavedChanges()){
+            showSaveDialog();
+        } else {
+            navigateBack();
+        }
+    }
+
     private void forceRedraw(){
         Editable text = textInput.getText();
         if (text == null) return;
@@ -247,6 +307,22 @@ public class EditorFragment extends Fragment {
                 start, insertEnd,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         startSelectionOverrideTimer(insertEnd);
+    }
+
+    private void navigateBack(){
+        NavHostFragment.findNavController(EditorFragment.this).popBackStack();
+    }
+
+    private void showSaveDialog() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Save changes?")
+                .setMessage("You have unsaved changes. Do you want to keep them?")
+                .setPositiveButton("Save", (dialog, which) ->
+                        saveButtonPressed())
+                .setNegativeButton("Discard", (dialog, which) ->
+                        navigateBack())
+                .setNeutralButton("Cancel", null)
+                .show();
     }
 
     private void startSelectionOverrideTimer(int curserPos){

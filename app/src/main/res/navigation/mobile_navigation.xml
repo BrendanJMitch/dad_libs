@@ -54,6 +54,9 @@
         <argument
             android:name="template_id"
             app:argType="long" />
+        <action
+            android:id="@+id/action_editorFragment_to_homeFragment"
+            app:destination="@id/nav_home"/>
     </fragment>
 
     <fragment

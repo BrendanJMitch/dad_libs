@@ -29,6 +29,7 @@ public class EditorViewModel extends AndroidViewModel {
     private boolean isInitialized = false;
     private List<Replacement> replacements;
     private Template template;
+    private boolean hasUnsavedChanges = false;
 
     public interface TemplateLoadedCallback {
         void onLoaded(Template template);
@@ -43,14 +44,12 @@ public class EditorViewModel extends AndroidViewModel {
     }
 
     public void loadTemplate(long templateId, TemplateLoadedCallback callback){
-        if (templateId < 0){
-            template = new Template("", "");
-            replacements = new ArrayList<>();
-            callback.onLoaded(template);
-            return;
-        }
         AppDatabase.executor.execute(() -> {
-            template = templateDao.getById(templateId);
+            if (templateId >= 0){
+                template = templateDao.getById(templateId);
+            } else {
+                template = new Template("", "");
+            }
             new Handler(Looper.getMainLooper()).post(() ->
                     callback.onLoaded(template));
             if (!isInitialized) {
@@ -76,6 +75,16 @@ public class EditorViewModel extends AndroidViewModel {
 
     public void setTemplateText(String text) {
         template.text = text;
+        hasUnsavedChanges = true;
+    }
+
+    public void setTemplateName(String name) {
+        template.name = name;
+        hasUnsavedChanges = true;
+    }
+
+    public boolean hasUnsavedChanges(){
+        return hasUnsavedChanges;
     }
 
     public List<Replacement> getAllReplacements(String template){
@@ -90,5 +99,10 @@ public class EditorViewModel extends AndroidViewModel {
 
     public String getUnderlyingString(Placeholder placeholder) {
         return engine.getMarker(placeholder);
+    }
+
+    public void saveTemplate(){
+        hasUnsavedChanges = false;
+        AppDatabase.executor.execute(() -> templateDao.insert(template));
     }
 }

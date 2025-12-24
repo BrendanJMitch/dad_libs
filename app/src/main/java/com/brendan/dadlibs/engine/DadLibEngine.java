@@ -10,6 +10,7 @@ import com.brendan.dadlibs.entity.WordList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -117,7 +118,7 @@ public class DadLibEngine {
     }
 
     public String getMarker(Placeholder placeholder) {
-        return String.format("${%s %d %s}",
+        return String.format(Locale.US, "${%s %d %s}",
                 placeholder.wordList.marker,
                 placeholder.index,
                 placeholder.inflection.getLabel());
