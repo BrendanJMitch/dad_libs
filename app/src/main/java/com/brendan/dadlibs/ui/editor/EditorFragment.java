@@ -7,7 +7,10 @@ import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,8 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class EditorFragment extends Fragment {
     private Long templateId;
@@ -87,10 +92,17 @@ public class EditorFragment extends Fragment {
                         new PlaceholderSpan(getDisplayText(replacement.placeholder), placeholderColor),
                         replacement.startPos, replacement.startPos + replacement.length,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                builder.setSpan(
+                        new PlaceholderClickSpan(
+                                replacement.placeholder, this::onPlaceholderClick, this::onPlaceholderInsertClick),
+                        replacement.startPos, replacement.startPos + replacement.length,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
             textInput.setText(builder);
+            textInput.setSelection(builder.length());
         });
+        textInput.setMovementMethod(new ClickOnlyMovementMethod());
         textInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -152,8 +164,8 @@ public class EditorFragment extends Fragment {
         Editable spannable = textInput.getText();
         if (spannable == null) return;
 
-        PlaceholderSpan[] spans = spannable.getSpans(0, spannable.length(), PlaceholderSpan.class);
-        for (PlaceholderSpan span : spans) {
+        ModeSwitching[] spans = spannable.getSpans(0, spannable.length(), ModeSwitching.class);
+        for (ModeSwitching span : spans) {
             span.toInsertMode();
         }
         hideKeyboard();
@@ -166,8 +178,8 @@ public class EditorFragment extends Fragment {
         Editable spannable = textInput.getText();
         if (spannable == null) return;
 
-        PlaceholderSpan[] spans = spannable.getSpans(0, spannable.length(), PlaceholderSpan.class);
-        for (PlaceholderSpan span : spans) {
+        ModeSwitching[] spans = spannable.getSpans(0, spannable.length(), ModeSwitching.class);
+        for (ModeSwitching span : spans) {
             span.exitInsertMode();
         }
         restoreKeyboard();
@@ -230,7 +242,29 @@ public class EditorFragment extends Fragment {
                 new PlaceholderSpan(display, placeholderColor),
                 start, insertEnd,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textInput.setSelection(insertEnd);
+        text.setSpan(
+                new PlaceholderClickSpan(placeholder, this::onPlaceholderClick, this::onPlaceholderInsertClick),
+                start, insertEnd,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        startSelectionOverrideTimer(insertEnd);
+    }
+
+    private void startSelectionOverrideTimer(int curserPos){
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                textInput.setSelection(curserPos);
+            }
+        }, 100);
+    }
+
+    private void onPlaceholderClick(Placeholder placeholder){
+
+    }
+
+    private void onPlaceholderInsertClick(Placeholder placeholder){
+        insertPlaceholder(placeholder);
+        exitInsertMode();
     }
 
 }

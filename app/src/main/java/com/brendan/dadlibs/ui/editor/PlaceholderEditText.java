@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.Spannable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputConnectionWrapper;
@@ -13,19 +14,21 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 public class PlaceholderEditText extends AppCompatEditText {
 
+    private boolean hasTouched = false;
+
     public PlaceholderEditText(Context context) {
         super(context);
-        setFactories();
+        init();
     }
 
     public PlaceholderEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setFactories();
+        init();
     }
 
     public PlaceholderEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setFactories();
+        init();
     }
 
     @Override
@@ -61,6 +64,26 @@ public class PlaceholderEditText extends AppCompatEditText {
 
             return super.deleteSurroundingText(beforeLength, afterLength);
         }
+    }
+
+    private void init(){
+        setFactories();
+        //addTouchListener();
+    }
+
+
+    private void addTouchListener(){
+        setOnTouchListener((v, event) -> {
+//            if (event.getAction() == MotionEvent.ACTION_UP){
+//                if (hasTouched) {
+//                    return true;
+//                } else {
+//                    hasTouched = true;
+//                    return false;
+//                }
+//            }
+            return false; // allow normal behavior
+        });
     }
 
     /**

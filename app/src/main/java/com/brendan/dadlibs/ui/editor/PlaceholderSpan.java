@@ -9,7 +9,7 @@ import android.text.style.ReplacementSpan;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class PlaceholderSpan extends ReplacementSpan {
+public class PlaceholderSpan extends ReplacementSpan implements ModeSwitching {
 
     private final String label;
     private String underlyingText;
@@ -67,10 +67,12 @@ public class PlaceholderSpan extends ReplacementSpan {
         paint.setColor(oldColor);
     }
 
+    @Override
     public void toInsertMode(){
         insertMode = true;
     }
 
+    @Override
     public void exitInsertMode(){
         insertMode = false;
     }
