@@ -11,6 +11,8 @@ import com.brendan.dadlibs.dao.TemplateDao;
 import com.brendan.dadlibs.dao.WordListDao;
 import com.brendan.dadlibs.db.AppDatabase;
 import com.brendan.dadlibs.engine.DadLibEngine;
+import com.brendan.dadlibs.engine.PartOfSpeech;
+import com.brendan.dadlibs.engine.Placeholder;
 import com.brendan.dadlibs.engine.Replacement;
 import com.brendan.dadlibs.entity.Template;
 import com.brendan.dadlibs.entity.WordList;
@@ -72,7 +74,21 @@ public class EditorViewModel extends AndroidViewModel {
         return template.text;
     }
 
+    public void setTemplateText(String text) {
+        template.text = text;
+    }
+
     public List<Replacement> getAllReplacements(String template){
         return replacements;
+    }
+
+    public Placeholder getDefaultPlaceholder(WordList wordList){
+        PartOfSpeech partOfSpeech = PartOfSpeech.getByLabel(wordList.partOfSpeech);
+        int index = engine.getNextIndex(template, wordList);
+        return new Placeholder(wordList, partOfSpeech.getBaseInflection(), index);
+    }
+
+    public String getUnderlyingString(Placeholder placeholder) {
+        return engine.getMarker(placeholder);
     }
 }

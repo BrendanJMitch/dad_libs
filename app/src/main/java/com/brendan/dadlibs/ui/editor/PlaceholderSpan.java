@@ -1,12 +1,10 @@
 package com.brendan.dadlibs.ui.editor;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.text.style.ReplacementSpan;
-import android.util.TypedValue;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,11 +19,9 @@ public class PlaceholderSpan extends ReplacementSpan {
     private final float padding;
     private boolean insertMode = false;
 
-    public PlaceholderSpan(String label, Context context) {
+    public PlaceholderSpan(String label, int textColor) {
         this.label = label;
-        TypedValue tv = new TypedValue();
-        context.getTheme().resolveAttribute(com.google.android.material.R.attr.colorSecondaryVariant, tv, true);
-        this.textColor = tv.data;
+        this.textColor = textColor;
         this.padding = 32f; // px padding around text
     }
 

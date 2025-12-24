@@ -104,6 +104,25 @@ public class DadLibEngine {
         return replacements;
     }
 
+    public int getNextIndex(Template template, WordList wordList) {
+        int highestIndex = 0;
+        for (Replacement replacement : getAllReplacements(template.text)){
+            if (replacement.placeholder.wordList.id.equals(wordList.id)){
+                if (replacement.placeholder.index > highestIndex){
+                    highestIndex = replacement.placeholder.index;
+                }
+            }
+        }
+        return highestIndex + 1;
+    }
+
+    public String getMarker(Placeholder placeholder) {
+        return String.format("${%s %d %s}",
+                placeholder.wordList.marker,
+                placeholder.index,
+                placeholder.inflection.getLabel());
+    }
+
     private Placeholder getPlaceholder(String placeholderString){
         String[] tokens = placeholderString.split(" ");
         try {

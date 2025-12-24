@@ -4,14 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +35,8 @@ public class EditorFragment extends Fragment {
     private Long templateId;
     private EditorViewModel viewModel;
     private TextInputEditText titleInput;
-    private TextInputEditText textInput;
+    private PlaceholderEditText textInput;
+    private int placeholderColor;
     private ChipGroup insertPlaceholderGroup;
     private View insertPlaceholderMenu;
     private View addPlaceholderButton;
@@ -46,6 +47,10 @@ public class EditorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypedValue tv = new TypedValue();
+        requireContext().getTheme().resolveAttribute(
+                com.google.android.material.R.attr.colorSecondaryVariant, tv, true);
+        this.placeholderColor = tv.data;
 
         if (getArguments() != null) {
             templateId = getArguments().getLong("template_id");
@@ -57,7 +62,6 @@ public class EditorFragment extends Fragment {
         View fragment = inflater.inflate(R.layout.fragment_editor, container, false);
         titleInput = fragment.findViewById(R.id.template_title_input);
         textInput = fragment.findViewById(R.id.template_text_input);
-        setPartTextFactories(textInput);
         insertPlaceholderGroup = fragment.findViewById(R.id.insert_placeholder_group);
         insertPlaceholderMenu = fragment.findViewById(R.id.insert_menu);
         addPlaceholderButton = fragment.findViewById(R.id.new_placeholder_button);
@@ -80,13 +84,28 @@ public class EditorFragment extends Fragment {
 
             for (Replacement replacement : viewModel.getAllReplacements(template.text)) {
                 builder.setSpan(
-                        new PlaceholderSpan(getDisplayString(replacement.placeholder), requireContext()),
+                        new PlaceholderSpan(getDisplayText(replacement.placeholder), placeholderColor),
                         replacement.startPos, replacement.startPos + replacement.length,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
             textInput.setText(builder);
         });
+        textInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                textChanged(s);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+    }
+
+    private void textChanged(Editable s) {
+        viewModel.setTemplateText(s.toString());
     }
 
     @Override
@@ -94,7 +113,7 @@ public class EditorFragment extends Fragment {
         super.onDestroyView();
     }
 
-    private String getDisplayString(Placeholder placeholder){
+    private String getDisplayText(Placeholder placeholder){
         return String.format(Locale.US, "%s %d %s",
                 placeholder.wordList.singularName,
                 placeholder.index,
@@ -114,9 +133,8 @@ public class EditorFragment extends Fragment {
             );
 
             chip.setText(list.singularName);
-
             chip.setOnClickListener(v -> {
-                //insertPlaceholder(list.placeholder);
+                insertPlaceholder(viewModel.getDefaultPlaceholder(list));
                 exitInsertMode();
             });
 
@@ -196,27 +214,23 @@ public class EditorFragment extends Fragment {
         return insets != null && insets.isVisible(WindowInsetsCompat.Type.ime());
     }
 
-    /**
-     * This is a hack to overcome a performance issue that comes from using an EditText with more
-     * than a few Spans in it. See
-     * <a href="https://rsookram.github.io/2016/04/15/slow-textview-is-slow.html">this article</a>
-     * for details of the problem and the workaround implemented here.
-     *
-     * @param editText: the EditText need
-     */
-    private void setPartTextFactories(EditText editText) {
+    private void insertPlaceholder(Placeholder placeholder) {
+        Editable text = textInput.getText();
+        if (text == null) return;
 
-        editText.setEditableFactory(new Editable.Factory() {
-            @Override
-            public Editable newEditable(CharSequence source) {
-                return new EditorSpannableStringBuilder(source);
-            }
-        });
-        editText.setSpannableFactory(new Spannable.Factory() {
-            @Override
-            public Spannable newSpannable(CharSequence source) {
-                return new EditorSpannableStringBuilder(source);
-            }
-        });
+        String underlying = viewModel.getUnderlyingString(placeholder);
+        String display = getDisplayText(placeholder);
+
+        int start = Math.max(0, Math.min(textInput.getSelectionStart(), textInput.getSelectionEnd()));
+        int end = Math.max(textInput.getSelectionStart(), textInput.getSelectionEnd());
+        text.replace(start, end, underlying);
+
+        int insertEnd = start + underlying.length();
+        text.setSpan(
+                new PlaceholderSpan(display, placeholderColor),
+                start, insertEnd,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textInput.setSelection(insertEnd);
     }
+
 }
