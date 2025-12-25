@@ -7,17 +7,19 @@ import androidx.annotation.NonNull;
 
 import com.brendan.dadlibs.engine.Placeholder;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class PlaceholderClickSpan extends ClickableSpan implements ModeSwitching {
 
     private final Placeholder placeholder;
     private final Consumer<Placeholder> onInsertClick;
-    private final Consumer<Placeholder> onClick;
+    private final BiConsumer<Placeholder, PlaceholderClickSpan> onClick;
     private boolean insertMode = false;
 
-    public PlaceholderClickSpan(Placeholder placeholder, Consumer<Placeholder> onClick,
-                                Consumer<Placeholder> onInsertClick){
+    public PlaceholderClickSpan(
+            Placeholder placeholder, BiConsumer<Placeholder, PlaceholderClickSpan> onClick,
+            Consumer<Placeholder> onInsertClick){
         this.placeholder = placeholder;
         this.onClick = onClick;
         this.onInsertClick = onInsertClick;
@@ -29,7 +31,7 @@ public class PlaceholderClickSpan extends ClickableSpan implements ModeSwitching
             onInsertClick.accept(placeholder);
             insertMode = false;
         } else {
-            onClick.accept(placeholder);
+            onClick.accept(placeholder, this);
         }
     }
 

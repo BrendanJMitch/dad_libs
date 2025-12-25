@@ -1,8 +1,10 @@
 package com.brendan.dadlibs.ui.editor;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -15,11 +17,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.MenuProvider;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -28,6 +32,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.engine.Inflection;
+import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.engine.Placeholder;
 import com.brendan.dadlibs.engine.Replacement;
 import com.brendan.dadlibs.entity.Template;
@@ -38,6 +44,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -287,14 +294,17 @@ public class EditorFragment extends Fragment {
     }
 
     private void insertPlaceholder(Placeholder placeholder) {
+        int start = Math.max(0, Math.min(textInput.getSelectionStart(), textInput.getSelectionEnd()));
+        int end = Math.max(textInput.getSelectionStart(), textInput.getSelectionEnd());
+        insertPlaceholder(placeholder, start, end);
+    }
+
+    private void insertPlaceholder(Placeholder placeholder, int start, int end) {
         Editable text = textInput.getText();
         if (text == null) return;
 
         String underlying = viewModel.getUnderlyingString(placeholder);
         String display = getDisplayText(placeholder);
-
-        int start = Math.max(0, Math.min(textInput.getSelectionStart(), textInput.getSelectionEnd()));
-        int end = Math.max(textInput.getSelectionStart(), textInput.getSelectionEnd());
         text.replace(start, end, underlying);
 
         int insertEnd = start + underlying.length();
@@ -334,8 +344,58 @@ public class EditorFragment extends Fragment {
         }, 100);
     }
 
-    private void onPlaceholderClick(Placeholder placeholder){
+    private void onPlaceholderClick(Placeholder placeholder, PlaceholderClickSpan span){
+        //TODO: Anchor this to the correct placeholder
+        List<Inflection> options = PartOfSpeech.getByLabel(placeholder.wordList.partOfSpeech)
+                .getInflections();
+        Editable text = Objects.requireNonNull(textInput.getText());
+        int spanStart = text.getSpanStart(span);
+        int spanEnd = text.getSpanEnd(span);
 
+        PopupMenu popup = new PopupMenu(requireContext(), createAnchorView(spanStart, spanEnd));
+        Menu menu = popup.getMenu();
+
+        for (int i = 0; i < options.size(); i++) {
+            Inflection inflection = options.get(i);
+            menu.add(Menu.NONE, i, i, inflection.getDisplayName());
+        }
+
+        popup.setOnMenuItemClickListener(item -> {
+            Placeholder newPlaceholder= new Placeholder(
+                    placeholder.wordList, options.get(item.getItemId()), placeholder.index);
+            insertPlaceholder(newPlaceholder, spanStart, spanEnd);
+            return true;
+        });
+
+        popup.show();
+    }
+
+    private View createAnchorView(int start, int end){
+        Layout layout = textInput.getLayout();
+        if (layout == null) return textInput;
+
+        int[] location = new int[2];
+        textInput.getLocationOnScreen(location);
+
+        int line = layout.getLineForOffset(start);
+        Rect bounds = new Rect(
+                (int) (location[0] + layout.getPrimaryHorizontal(start)),
+                (location[1] + layout.getLineTop(line)),
+                (int) (location[0] + layout.getPrimaryHorizontal(end)),
+                (location[1] + layout.getLineBottom(line)));
+
+        View anchor = new View(requireContext());
+        FrameLayout.LayoutParams params =
+                new FrameLayout.LayoutParams(1, 1);
+        params.leftMargin = bounds.centerX();
+        params.topMargin  = bounds.bottom;
+
+        ViewGroup root = (ViewGroup) requireActivity()
+                .getWindow()
+                .getDecorView();
+
+        root.addView(anchor, params);
+        return anchor;
     }
 
     private void onPlaceholderInsertClick(Placeholder placeholder){
