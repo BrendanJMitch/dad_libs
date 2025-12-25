@@ -6,6 +6,7 @@ import android.os.Looper;
 
 import androidx.lifecycle.AndroidViewModel;
 
+import com.brendan.dadlibs.dao.SavedStoryDao;
 import com.brendan.dadlibs.dao.TemplateDao;
 import com.brendan.dadlibs.dao.WordDao;
 import com.brendan.dadlibs.dao.WordListDao;
@@ -20,7 +21,9 @@ public class ReaderViewModel extends AndroidViewModel {
     private final TemplateDao templateDao;
     private final WordListDao wordListDao;
     private final WordDao wordDao;
+    private final SavedStoryDao savedStoryDao;
     private final DadLibEngine engine;
+    private SavedStory story;
     private boolean isInitialized = false;
 
     public interface TemplateLoadedCallback {
@@ -33,6 +36,7 @@ public class ReaderViewModel extends AndroidViewModel {
         templateDao = db.templateDao();
         wordListDao = db.wordListDao();
         wordDao = db.wordDao();
+        savedStoryDao = db.savedStoryDao();
         this.engine = new DadLibEngine((word, inflectionType) ->
                 db.inflectionDao().getInflection(word.id, inflectionType));
     }
@@ -46,11 +50,18 @@ public class ReaderViewModel extends AndroidViewModel {
                 isInitialized = true;
             }
             Template template = templateDao.getById(templateId);
-            SavedStory story = engine.create(template);
+            story = engine.create(template);
             new Handler(Looper.getMainLooper()).post(() ->
                     callback.onLoaded(story));
         });
     }
 
+    public SavedStory getStory(){
+        return story;
+    }
+
+    public void saveStory(SavedStory newStory){
+        AppDatabase.executor.execute(() -> savedStoryDao.insert(newStory));
+    }
 
 }

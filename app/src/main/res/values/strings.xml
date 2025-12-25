@@ -38,4 +38,7 @@
     <string name="new_placeholder">Add placeholder</string>
     <string name="close">Close</string>
     <string name="done">Done</string>
+    <string name="save_story">Save Story</string>
+    <string name="confirm_delete_saved_story">Are you sure you want to delete %s?</string>
+    <string name="story_title">Title</string>
 </resources>

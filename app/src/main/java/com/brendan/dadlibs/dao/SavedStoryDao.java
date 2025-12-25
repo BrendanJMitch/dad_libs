@@ -21,4 +21,7 @@ public interface SavedStoryDao {
 
     @Query("SELECT * FROM SavedStory")
     List<SavedStory> getAll();
+
+    @Query("SELECT * FROM SavedStory s WHERE s.id = :id")
+    SavedStory get(long id);
 }

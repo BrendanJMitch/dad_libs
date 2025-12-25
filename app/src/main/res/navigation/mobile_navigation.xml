@@ -30,9 +30,33 @@
 
     <fragment
         android:id="@+id/nav_saved_stories"
-        android:name="com.brendan.dadlibs.ui.stories.StoriesFragment"
+        android:name="com.brendan.dadlibs.ui.stories.SavedStoriesFragment"
         android:label="@string/menu_saved_stories"
-        tools:layout="@layout/fragment_stories" />
+        tools:layout="@layout/fragment_stories">
+        <action
+            android:id="@+id/action_storiesFragment_to_savedReaderFragment"
+            app:destination="@id/nav_saved_story_reader"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_saved_story_reader"
+        android:name="com.brendan.dadlibs.ui.stories.SavedReaderFragment"
+        tools:layout="@layout/fragment_saved_story_reader"
+        android:label="Story Reader">
+        <action
+            android:id="@+id/action_storiesFragment_to_savedReaderFragment"
+            app:destination="@id/nav_saved_story_reader"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_saved_story_reader"
+        android:name="com.brendan.dadlibs.ui.stories.SavedReaderFragment"
+        tools:layout="@layout/fragment_saved_story_reader"
+        android:label="Story Reader">
+        <argument
+            android:name="saved_story_id"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@+id/words_fragment"
