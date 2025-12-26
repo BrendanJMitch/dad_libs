@@ -3,6 +3,7 @@ package com.brendan.dadlibs.ui.words;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -37,6 +38,7 @@ public class WordDialog {
     protected final MaterialTextView inflectedFormsHeader;
     protected final LinearLayout inflectedFormsLayout;
     protected final OnSaveCallback onSaveCallback;
+    protected int latestUpdate = 0;
 
     protected WordDialog(Context context, WordsViewModel viewModel, OnSaveCallback onSaveCallback) {
         this.context = context;
@@ -84,7 +86,7 @@ public class WordDialog {
     }
 
     protected void textChanged(Editable s) {
-        viewModel.buildWordInflections(s.toString(), WordDialog.this::updateInflections);
+        viewModel.buildWordInflections(s.toString(), WordDialog.this::updateInflections, ++latestUpdate);
     }
 
     public void show(){
@@ -117,7 +119,9 @@ public class WordDialog {
         }
     }
 
-    protected void updateInflections(Map<Inflection, String> inflections){
+    protected void updateInflections(Map<Inflection, String> inflections, int updateId){
+        if (updateId < latestUpdate)
+            return;
         for (Map.Entry<Inflection, TextInputEditText> entry : inflectionInputs.entrySet()) {
             entry.getValue().setText(inflections.get(entry.getKey()));
         }

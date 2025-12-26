@@ -31,7 +31,7 @@ public class EditWordDialog extends WordDialog {
     @Override
     protected void textChanged(Editable s) {
         if (!suppressTextWatcher)
-            viewModel.buildWordInflections(s.toString(), super::updateInflections);
+            viewModel.buildWordInflections(s.toString(), super::updateInflections, ++latestUpdate);
     }
 
     @Override

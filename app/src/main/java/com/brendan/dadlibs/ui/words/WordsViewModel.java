@@ -3,6 +3,7 @@ package com.brendan.dadlibs.ui.words;
 import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 
@@ -43,7 +44,7 @@ public class WordsViewModel extends AndroidViewModel {
     }
 
     public interface InflectionsLoadedCallback {
-        void onLoaded(Map<Inflection, String> inflections);
+        void onLoaded(Map<Inflection, String> inflections, int updateId);
     }
 
     public WordsViewModel(Application application) {
@@ -84,18 +85,18 @@ public class WordsViewModel extends AndroidViewModel {
                             inflectionDao.getInflection(word.id, inflection.getLabel()));
             }
             new Handler(Looper.getMainLooper()).post(() ->
-                    callback.onLoaded(wordInflections));
+                    callback.onLoaded(wordInflections, 0));
         });
     }
 
-    public void buildWordInflections(String word, InflectionsLoadedCallback callback){
+    public void buildWordInflections(String word, InflectionsLoadedCallback callback, int updateId){
         Map<Inflection, String> wordInflections = new HashMap<>();
         UnimoprhDatabase.executor.execute(() -> {
             for (Inflection inflection : partOfSpeech.getInflections()){
                 wordInflections.put(inflection, wordBuilder.getInflectedForm(word, inflection));
             }
             new Handler(Looper.getMainLooper()).post(() ->
-                    callback.onLoaded(wordInflections));
+                    callback.onLoaded(wordInflections, updateId));
         });
     }
 
