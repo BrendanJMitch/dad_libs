@@ -31,9 +31,10 @@ public class DadLibEngineTest {
     private DadLibEngine engine;
     private static final String NOUN_MARKER = "nouns", VERB_MARKER = "verbs", TITLE = "My Life";
     private static final String
-            BASE = "base",
+            SINGULAR = "singular",
+            PRESENT = "present",
             PLURAL = "plural",
-            PAST = "past";
+            PAST = "simple_past";
     private static final Word
             NOUN_0 = new Word(0L, "computer", 0L),
             NOUN_1 = new Word(1L, "sponge", 0L),
@@ -47,11 +48,11 @@ public class DadLibEngineTest {
             VERB_0_BASE = VERB_0.word,
             VERB_0_PAST = "sneezed";
     private static final Map<String, String> INFLECTIONS = Map.of(
-            NOUN_0.id + BASE, NOUN_0_BASE,
+            NOUN_0.id + SINGULAR, NOUN_0_BASE,
             NOUN_0.id + PLURAL, NOUN_0_PLURAL,
-            NOUN_1.id + BASE, NOUN_1_BASE,
+            NOUN_1.id + SINGULAR, NOUN_1_BASE,
             NOUN_1.id + PLURAL, NOUN_1_PLURAL,
-            VERB_0.id + BASE, VERB_0_BASE,
+            VERB_0.id + PRESENT, VERB_0_BASE,
             VERB_0.id + PAST, VERB_0_PAST
     );
 
@@ -67,14 +68,14 @@ public class DadLibEngineTest {
         String end = " fell on my head.";
 
         engine.addWordList(
-                new WordList(0L, "Nouns", NOUN_MARKER, false, ""),
+                new WordList(0L, "Nouns", "Noun", NOUN_MARKER, false, ""),
                 List.of(
                         NOUN_0
                 ));
 
         Template template = new Template(
                 TITLE,
-                beginning + "${" + NOUN_MARKER + " 0 " + BASE + "}" + end
+                beginning + "${" + NOUN_MARKER + " 0 " + SINGULAR + "}" + end
         );
 
         SavedStory story = engine.create(template);
@@ -88,19 +89,19 @@ public class DadLibEngineTest {
         String end = " in my house.";
 
         engine.addWordList(
-                new WordList(0L, "Nouns", NOUN_MARKER, false, ""),
+                new WordList(0L, "Nouns", "Noun", NOUN_MARKER, false, ""),
                 List.of(
                         NOUN_1
                 ));
         engine.addWordList(
-                new WordList(0L, "Verbs", VERB_MARKER, false, ""),
+                new WordList(0L, "Verbs", "Verb", VERB_MARKER, false, ""),
                 List.of(
                         VERB_0
                 ));
 
         Template template = new Template(
                 TITLE,
-                beginning + "${" + VERB_MARKER + " 0 " + BASE + "}" + middle + "${" + NOUN_MARKER + " 0 " + BASE + "}" + end
+                beginning + "${" + VERB_MARKER + " 0 " + PRESENT + "}" + middle + "${" + NOUN_MARKER + " 0 " + SINGULAR + "}" + end
         );
 
         SavedStory story = engine.create(template);
@@ -115,7 +116,7 @@ public class DadLibEngineTest {
         String end = " when I woke up this morning.";
 
         engine.addWordList(
-                new WordList(0L, "Nouns", NOUN_MARKER, false, ""),
+                new WordList(0L, "Nouns", "Noun", NOUN_MARKER, false, ""),
                 List.of(
                         NOUN_0,
                         NOUN_1
@@ -123,7 +124,7 @@ public class DadLibEngineTest {
 
         Template template = new Template(
                 TITLE,
-                beginning + "${" + NOUN_MARKER + " 0 " + BASE + "}" + middle + "${" + NOUN_MARKER + " 1 " + BASE + "}" + end
+                beginning + "${" + NOUN_MARKER + " 0 " + SINGULAR + "}" + middle + "${" + NOUN_MARKER + " 1 " + SINGULAR + "}" + end
         );
 
         SavedStory story = engine.create(template);
@@ -140,12 +141,12 @@ public class DadLibEngineTest {
         String end = " were too small.";
 
         engine.addWordList(
-                new WordList(0L, "Nouns", NOUN_MARKER, false, ""),
+                new WordList(0L, "Nouns", "Noun", NOUN_MARKER, false, ""),
                 List.of(
                         NOUN_1
                 ));
         engine.addWordList(
-                new WordList(0L, "Verbs", VERB_MARKER, false, ""),
+                new WordList(0L, "Verbs", "Verb", VERB_MARKER, false, ""),
                 List.of(
                         VERB_0
                 ));
@@ -167,7 +168,7 @@ public class DadLibEngineTest {
         String end = " does not love him.";
 
         engine.addWordList(
-                new WordList(0L, "Nouns", NOUN_MARKER, false, ""),
+                new WordList(0L, "Nouns", "Noun", NOUN_MARKER, false, ""),
                 List.of(
                         NOUN_0,
                         NOUN_1
@@ -175,7 +176,7 @@ public class DadLibEngineTest {
 
         Template template = new Template(
                 TITLE,
-                beginning + "${" + NOUN_MARKER + " 0 " + BASE + "}" + middle + "${" + NOUN_MARKER + " 0 " + BASE + "}" + end
+                beginning + "${" + NOUN_MARKER + " 0 " + SINGULAR + "}" + middle + "${" + NOUN_MARKER + " 0 " + SINGULAR + "}" + end
         );
 
         SavedStory story = engine.create(template);
@@ -197,11 +198,11 @@ public class DadLibEngineTest {
                 new Word(i, UUID.randomUUID().toString(), 0L))); // UUIDs are just a convenient way to get as many unique strings as we need
 
         engine.addWordList(
-                new WordList(0L, "Nouns", NOUN_MARKER, false, ""), words);
+                new WordList(0L, "Nouns", "Noun", NOUN_MARKER, false, ""), words);
 
         Template template = new Template(
                 TITLE,
-                "${" + NOUN_MARKER + " 0 " + BASE + "}"
+                "${" + NOUN_MARKER + " 0 " + SINGULAR + "}"
         );
 
         Set<String> stories = new TreeSet<>();

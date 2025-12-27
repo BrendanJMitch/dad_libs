@@ -53,7 +53,7 @@ public class MarkerGenTest {
 
     @Test
     public void testNormalization() {
-        String marker = new WordList(input, false, "")
+        String marker = new WordList(input, "", false, "")
                 .getMarkerString(0, Inflection.SINGULAR);
 
         Pattern pattern = Pattern.compile("\\$\\{([A-Za-z0-9_\\-\\s]+)\\}");
