@@ -6,11 +6,14 @@ import android.os.Looper;
 
 import androidx.lifecycle.AndroidViewModel;
 
+import com.brendan.dadlibs.dao.InflectionDao;
 import com.brendan.dadlibs.dao.WordDao;
 import com.brendan.dadlibs.dao.WordListDao;
 import com.brendan.dadlibs.db.AppDatabase;
+import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.entity.Word;
 import com.brendan.dadlibs.entity.WordList;
+import com.brendan.dadlibs.repository.WordListRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +25,8 @@ public class WordListsViewModel extends AndroidViewModel {
 
     private final WordListDao wordListDao;
     private final WordDao wordDao;
+    private final InflectionDao inflectionDao;
+    private final WordListRepository wordListRepository;
     private final Map<Long, List<Word>> wordsByListId;
 
     public interface DataLoadedCallback {
@@ -32,6 +37,8 @@ public class WordListsViewModel extends AndroidViewModel {
         super(application);
         wordListDao = AppDatabase.getDatabase(application).wordListDao();
         wordDao = AppDatabase.getDatabase(application).wordDao();
+        inflectionDao = AppDatabase.getDatabase(application).inflectionDao();
+        wordListRepository = new WordListRepository(wordListDao, wordDao, inflectionDao);
         wordsByListId = new HashMap<>();
     }
 
@@ -52,13 +59,8 @@ public class WordListsViewModel extends AndroidViewModel {
     public void copyWordList(WordList original, String newName, String newSingularName, DataLoadedCallback callback){
         WordList copy = new WordList(newName, newSingularName, false, original.partOfSpeech);
         AppDatabase.executor.execute(() -> {
-            long newId = wordListDao.insert(copy);
-            List<Word> words = wordDao.getAllFromList(original.id);
-            for (Word word : words) {
-                word.id = null;
-                word.wordListId = newId;
-            }
-            wordDao.insert(words);
+            long newId = wordListRepository.deepCopyWordList(original, newName, newSingularName);
+            List<Word> words = wordDao.getAllFromList(newId);
             this.wordsByListId.put(newId, words);
             List<WordList> wordLists = wordListDao.getAll();
             new Handler(Looper.getMainLooper()).post(() -> callback.onLoaded(wordLists));

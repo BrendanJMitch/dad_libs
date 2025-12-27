@@ -31,4 +31,7 @@ public interface WordListDao {
     @Query("Select * FROM WordList w WHERE w.id = :id")
     WordList getById(long id);
 
+    @Query("SELECT * FROM Word WHERE wordListId = :wordListId")
+    List<WordWithInflections> getWordsWithInflections(long wordListId);
+
 }

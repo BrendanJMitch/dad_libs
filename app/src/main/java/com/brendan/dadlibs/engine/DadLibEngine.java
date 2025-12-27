@@ -85,9 +85,10 @@ public class DadLibEngine {
             Placeholder placeholder = Objects.requireNonNull(replacement.placeholder);
             Word word = randomWords.get(placeholder.wordList.marker)
                     .get(placeholder.index);
-            replacementStr = inflector.getInflection(word, placeholder.inflection.getLabel());
+            replacementStr = Objects.requireNonNull(
+                    inflector.getInflection(word, placeholder.inflection.getLabel()));
         } catch (NullPointerException e){
-            replacementStr = "(unknown word type)";
+            replacementStr = "(unknown word)";
         }
         return text.substring(0, replacement.startPos) +
                 replacementStr +
