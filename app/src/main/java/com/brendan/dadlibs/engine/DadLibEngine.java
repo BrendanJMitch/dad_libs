@@ -89,6 +89,8 @@ public class DadLibEngine {
                     inflector.getInflection(word, placeholder.inflection.getLabel()));
         } catch (NullPointerException e){
             replacementStr = "(unknown word)";
+        } catch (IndexOutOfBoundsException e) {
+            replacementStr = String.format("(ran out of %s)", replacement.placeholder.wordList.name);
         }
         return text.substring(0, replacement.startPos) +
                 replacementStr +

@@ -163,8 +163,14 @@ public class EditorFragment extends Fragment {
         SpannableStringBuilder builder = new SpannableStringBuilder(template.text);
 
         for (Replacement replacement : viewModel.getAllReplacements(template.text)) {
+            String display;
+            try {
+                display = getDisplayText(replacement.placeholder);
+            } catch (IllegalArgumentException e){
+                continue;
+            }
             builder.setSpan(
-                    new PlaceholderSpan(getDisplayText(replacement.placeholder), placeholderColor),
+                    new PlaceholderSpan(display, placeholderColor),
                     replacement.startPos, replacement.startPos + replacement.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.setSpan(
@@ -179,10 +185,14 @@ public class EditorFragment extends Fragment {
     }
 
     private String getDisplayText(Placeholder placeholder){
-        return String.format(Locale.US, "%s %d %s",
-                placeholder.wordList.singularName,
-                placeholder.index,
-                placeholder.inflection.getDisplayName());
+        try {
+            return String.format(Locale.US, "%s %d %s",
+                    placeholder.wordList.singularName,
+                    placeholder.index,
+                    placeholder.inflection.getDisplayName());
+        } catch (NullPointerException e){
+            throw new IllegalArgumentException("Invalid placeholder");
+        }
     }
 
     private void populateInsertMenu(List<WordList> lists) {
@@ -302,9 +312,14 @@ public class EditorFragment extends Fragment {
     private void insertPlaceholder(Placeholder placeholder, int start, int end) {
         Editable text = textInput.getText();
         if (text == null) return;
+        String display;
+        try {
+            display = getDisplayText(placeholder);
+        } catch (IllegalArgumentException e){
+            return;
+        }
 
         String underlying = viewModel.getUnderlyingString(placeholder);
-        String display = getDisplayText(placeholder);
         text.replace(start, end, underlying);
 
         int insertEnd = start + underlying.length();
