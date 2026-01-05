@@ -74,13 +74,17 @@ public class EditorViewModel extends AndroidViewModel {
     }
 
     public void setTemplateText(String text) {
-        template.text = text;
-        hasUnsavedChanges = true;
+        if (!text.equals(template.text)) {
+            template.text = text;
+            hasUnsavedChanges = true;
+        }
     }
 
     public void setTemplateName(String name) {
-        template.name = name;
-        hasUnsavedChanges = true;
+        if (!name.equals(template.name)) {
+            template.name = name;
+            hasUnsavedChanges = true;
+        }
     }
 
     public boolean hasUnsavedChanges(){
@@ -88,6 +92,7 @@ public class EditorViewModel extends AndroidViewModel {
     }
 
     public List<Replacement> getAllReplacements(String template){
+        // TODO: Race condition if replacements isn't loaded
         return replacements;
     }
 
