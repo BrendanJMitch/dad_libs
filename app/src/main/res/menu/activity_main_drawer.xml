@@ -16,5 +16,9 @@
             android:id="@+id/nav_saved_stories"
             android:icon="@drawable/ic_menu_saved_stories"
             android:title="@string/menu_saved_stories" />
+        <item
+            android:id="@+id/nav_import_export"
+            android:icon="@drawable/ic_import_export"
+            android:title="@string/menu_import_export" />
     </group>
 </menu>

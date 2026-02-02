@@ -31,14 +31,22 @@
     <string name="template_editor">Template Edtitor</string>
     <string name="template_title">Title</string>
     <string name="signature">By Brendan Mitchell</string>
-    <string name="initializing">Initializing...</string>
+    <string name="initializing">Initializing…</string>
     <string name="dadlibs_logo">DadLibs Logo</string>
     <string name="word_list_singular_name">Placeholder name</string>
-    <string name="editor_text_hint">Compose your Dad Lib story here...</string>
+    <string name="editor_text_hint">Compose your Dad Lib story here…</string>
     <string name="new_placeholder">Add placeholder</string>
     <string name="close">Close</string>
     <string name="done">Done</string>
     <string name="save_story">Save Story</string>
     <string name="confirm_delete_saved_story">Are you sure you want to delete %s?</string>
     <string name="story_title">Title</string>
+    <string name="menu_import_export">Import and Export</string>
+    <string name="export_database">Export Database</string>
+    <string name="import_database">Import Database</string>
+    <string name="import_items">Import Shared Items</string>
+    <string name="export_database_description">Save all your words, templates, and stories so you can restore them later</string>
+    <string name="import_database_description">Restore all words, templates, and stories from a file</string>
+    <string name="import_item_description">Import a word list, template, or story and add it to your collection</string>
+    <string name="proceed_import_database">Proceed</string>
 </resources>

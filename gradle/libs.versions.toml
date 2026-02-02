@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.1"
+agp = "8.13.2"
 androidxJunit = "1.1.5"
 espressoCoreVersion = "3.5.1"
 gson = "2.13.2"
@@ -16,8 +16,10 @@ navigationFragment = "2.6.0"
 navigationUi = "2.6.0"
 navigationFragmentVersion = "2.9.3"
 navigationUiVersion = "2.9.3"
+processPhoenix = "3.0.0"
 roomCommonJvm = "2.7.2"
 roomRuntimeAndroid = "2.7.2"
+preference = "1.2.1"
 
 [libraries]
 androidx-espresso-core-v351 = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
@@ -37,10 +39,12 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragmentVersion" }
 androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUiVersion" }
+process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "processPhoenix" }
 room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCommonJvm" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCommonJvm" }
 room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
+androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

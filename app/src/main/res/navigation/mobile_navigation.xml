@@ -39,13 +39,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_saved_story_reader"
-        android:name="com.brendan.dadlibs.ui.stories.SavedReaderFragment"
-        tools:layout="@layout/fragment_saved_story_reader"
-        android:label="Story Reader">
-        <action
-            android:id="@+id/action_storiesFragment_to_savedReaderFragment"
-            app:destination="@id/nav_saved_story_reader"/>
+        android:id="@+id/nav_import_export"
+        android:name="com.brendan.dadlibs.ui.importexport.ImportExportFragment"
+        android:label="@string/menu_import_export">
     </fragment>
 
     <fragment

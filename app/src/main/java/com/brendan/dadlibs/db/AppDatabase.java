@@ -28,6 +28,7 @@ import java.util.concurrent.Executors;
 public abstract class AppDatabase extends RoomDatabase {
     public static final ExecutorService executor =
             Executors.newFixedThreadPool(4);
+    public static final String DB_FILENAME = "app_database.db";
 
     public abstract WordDao wordDao();
     public abstract WordListDao wordListDao();
@@ -43,7 +44,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(
                             context.getApplicationContext(),
-                            AppDatabase.class, "app_database.db"
+                            AppDatabase.class, DB_FILENAME
                     ).addCallback(new Callback() {
                             @Override
                             public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -73,5 +74,9 @@ public abstract class AppDatabase extends RoomDatabase {
             }
         }
         return INSTANCE;
+    }
+
+    public int version(){
+        return this.getOpenHelper().getReadableDatabase().getVersion();
     }
 }

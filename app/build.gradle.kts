@@ -11,7 +11,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,6 +31,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -49,6 +50,8 @@ dependencies {
     implementation(libs.room.common.jvm)
     implementation(libs.room.runtime.android)
     implementation(libs.gson)
+    implementation(libs.process.phoenix)
+    implementation(libs.androidx.preference)
 
     annotationProcessor(libs.room.compiler)
 

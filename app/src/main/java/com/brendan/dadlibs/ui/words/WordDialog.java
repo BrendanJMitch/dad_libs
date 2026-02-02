@@ -78,9 +78,8 @@ public class WordDialog {
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
 
-        dialog.setOnShowListener(dlg -> {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this::onSaveButtonPressed);
-        });
+        dialog.setOnShowListener(
+                dlg -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(this::onSaveButtonPressed));
 
         return dialog;
     }
