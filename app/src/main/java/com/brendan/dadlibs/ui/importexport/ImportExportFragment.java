@@ -83,7 +83,10 @@ public class ImportExportFragment extends PreferenceFragmentCompat {
                 .create();
         dialog.setOnShowListener(
                 dlg -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
-                        v -> importDbLauncher.launch(new String[] {"application/zip"})));
+                        v -> {
+                            importDbLauncher.launch(new String[] {"application/zip"});
+                            dialog.dismiss();
+                        }));
 
         dialog.show();
     }
@@ -97,7 +100,15 @@ public class ImportExportFragment extends PreferenceFragmentCompat {
     }
 
     private void handleFutureVersion(String currentVersion, String importVersion){
-
+        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+                .setTitle("Future Version Detected")
+                .setMessage(
+                        String.format("This database file was created with DadLibs version %s. " +
+                                "You currently have version %s. Upgrade to DadLibs %s to import this file.",
+                                importVersion, currentVersion, importVersion))
+                .setPositiveButton(android.R.string.ok, null)
+                .create();
+        dialog.show();
     }
 
     private void handleSuccessfulImport(){
