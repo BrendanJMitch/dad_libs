@@ -41,7 +41,7 @@
     <string name="save_story">Save Story</string>
     <string name="confirm_delete_saved_story">Are you sure you want to delete %s?</string>
     <string name="story_title">Title</string>
-    <string name="menu_import_export">Import and Export</string>
+    <string name="menu_options">Options</string>
     <string name="export_database">Export Database</string>
     <string name="import_database">Import Database</string>
     <string name="import_items">Import Shared Items</string>
@@ -49,4 +49,12 @@
     <string name="import_database_description">Restore all words, templates, and stories from a file</string>
     <string name="import_item_description">Import a word list, template, or story and add it to your collection</string>
     <string name="proceed_import_database">Proceed</string>
+    <string name="options">Options</string>
+    <string name="menu_import_export">Import/Export Data</string>
+    <string name="menu_about">About</string>
+    <string name="about_version">Version</string>
+    <string name="about_licenses">Licensing</string>
+    <string name="about_changelog">Changelog</string>
+    <string name="about_source">Source Code</string>
+    <string name="about_bug_report">Report a Bug</string>
 </resources>

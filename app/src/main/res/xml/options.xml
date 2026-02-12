@@ -1,0 +1,55 @@
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="Import/Export Data"
+        app:iconSpaceReserved="false">
+        <androidx.preference.Preference
+            android:key="export_database"
+            android:summary="@string/export_database_description"
+            android:title="@string/export_database"
+            app:singleLineTitle="false" />
+
+        <androidx.preference.Preference
+            android:key="import_database"
+            android:summary="@string/import_database_description"
+            android:title="@string/import_database"
+            app:singleLineTitle="false"/>
+
+    </PreferenceCategory>
+
+
+
+    <PreferenceCategory
+        android:title="About"
+        app:iconSpaceReserved="false">
+
+        <androidx.preference.Preference
+            android:key="app_version"
+            android:title="@string/about_version"
+            android:selectable="false"
+            android:icon="@drawable/ic_version"/>
+
+        <androidx.preference.Preference
+            android:key="changelog"
+            android:title="@string/about_changelog"
+            app:icon="@drawable/ic_changelog"/>
+
+        <androidx.preference.Preference
+            android:key="source_code"
+            android:title="@string/about_source"
+            android:icon="@drawable/ic_source_code"/>
+
+        <androidx.preference.Preference
+            android:key="licenses"
+            android:title="@string/about_licenses"
+            android:icon="@drawable/ic_license"/>
+
+        <androidx.preference.Preference
+            android:key="bug_report"
+            android:title="@string/about_bug_report"
+            android:icon="@drawable/ic_bug"/>
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
