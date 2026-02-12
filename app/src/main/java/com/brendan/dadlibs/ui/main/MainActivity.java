@@ -1,7 +1,6 @@
 package com.brendan.dadlibs.ui.main;
 
 import android.os.Bundle;
-import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_word_lists, R.id.nav_saved_stories, R.id.nav_import_export)
+                R.id.nav_home, R.id.nav_word_lists, R.id.nav_saved_stories, R.id.nav_options)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);

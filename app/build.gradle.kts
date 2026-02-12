@@ -52,6 +52,9 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.process.phoenix)
     implementation(libs.androidx.preference)
+    implementation(libs.markwon.core)
+    implementation(libs.markwon.ext.tables)
+    implementation(libs.markwon.ext.strikethrough)
 
     annotationProcessor(libs.room.compiler)
 
