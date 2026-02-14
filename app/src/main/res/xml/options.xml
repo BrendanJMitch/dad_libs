@@ -28,7 +28,6 @@
         <androidx.preference.Preference
             android:key="app_version"
             android:title="@string/about_version"
-            android:selectable="false"
             android:icon="@drawable/ic_version"/>
 
         <androidx.preference.Preference
@@ -44,6 +43,7 @@
         <androidx.preference.Preference
             android:key="licenses"
             android:title="@string/about_licenses"
+            android:summary="@string/license_name"
             android:icon="@drawable/ic_license"/>
 
         <androidx.preference.Preference

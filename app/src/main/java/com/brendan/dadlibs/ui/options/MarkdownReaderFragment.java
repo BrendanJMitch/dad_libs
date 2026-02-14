@@ -1,7 +1,10 @@
 package com.brendan.dadlibs.ui.options;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +16,15 @@ import androidx.fragment.app.Fragment;
 
 import com.brendan.dadlibs.R;
 
+import org.commonmark.node.Heading;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
+import io.noties.markwon.MarkwonSpansFactory;
 import io.noties.markwon.core.MarkwonTheme;
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
 import io.noties.markwon.ext.tables.TablePlugin;
@@ -45,15 +51,31 @@ public class MarkdownReaderFragment extends Fragment {
         TextView textView = view.findViewById(R.id.content);
         String markdown = readRawResource(documentId);
 
+        int color;
+        TypedValue tv = new TypedValue();
+        if (requireContext().getTheme().resolveAttribute(
+                android.R.attr.textColor, tv, true)){
+            color = tv.data;
+        } else {
+            color = Color.BLACK;
+        }
+
         Markwon markwon = Markwon.builder(requireContext())
                 .usePlugin(TablePlugin.create(requireContext()))
                 .usePlugin(StrikethroughPlugin.create())
                 .usePlugin(new AbstractMarkwonPlugin(){
                     @Override
                     public void configureTheme(@NonNull MarkwonTheme.Builder builder) {
-                        builder.headingBreakHeight(0);
-                    }
-                })
+                        builder.headingBreakHeight(0)
+                                .bulletWidth(15);
+                    }})
+                .usePlugin(new AbstractMarkwonPlugin() {
+                    @Override
+                    public void configureSpansFactory(@NonNull MarkwonSpansFactory.Builder builder) {
+                        builder.appendFactory(
+                                Heading.class,
+                                (configuration, props) -> new ForegroundColorSpan(color));
+                    }})
                 .build();
         markwon.setMarkdown(textView, markdown);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
