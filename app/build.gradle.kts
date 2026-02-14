@@ -1,6 +1,10 @@
+import java.time.Year
+
 plugins {
     alias(libs.plugins.android.application)
 }
+
+val buildYear = Year.now().value
 
 android {
     namespace = "com.brendan.dadlibs"
@@ -12,6 +16,7 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.1.0"
+        buildConfigField("String", "COPYRIGHT", "\"Copyright © $buildYear Brendan Mitchell\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

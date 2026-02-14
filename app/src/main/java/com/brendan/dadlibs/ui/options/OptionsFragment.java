@@ -1,5 +1,7 @@
 package com.brendan.dadlibs.ui.options;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ public class OptionsFragment extends PreferenceFragmentCompat {
     private ActivityResultLauncher<String> exportDbLauncher;
     private ActivityResultLauncher<String[]> importDbLauncher;
     private ImportExportViewModel viewModel;
+    private static final String SOURCE_LOCATION = "https://github.com/BrendanJMitch/dad_libs";
+    private static final String CREATOR_PHONE = "15095544135";
 
 
     @Override
@@ -71,7 +75,7 @@ public class OptionsFragment extends PreferenceFragmentCompat {
 
         Preference versionPref = findPreference("app_version");
         if (versionPref != null) {
-            versionPref.setSummary(BuildConfig.VERSION_NAME);
+            versionPref.setSummary(String.format("%s\n%s", BuildConfig.VERSION_NAME, BuildConfig.COPYRIGHT));
         }
 
         Preference changelogPref = findPreference("changelog");
@@ -94,6 +98,27 @@ public class OptionsFragment extends PreferenceFragmentCompat {
                 args.putInt("document_id", R.raw.license);
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_optionsFragment_to_markdownReaderFragment, args);
+                return true;
+            });
+        }
+
+        Preference sourcePref = findPreference("source_code");
+        if (sourcePref != null) {
+            sourcePref.setOnPreferenceClickListener(pref -> {
+                Uri uri = Uri.parse(SOURCE_LOCATION);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                return true;
+            });
+        }
+
+        Preference bugReportPref = findPreference("bug_report");
+        if (bugReportPref !=  null) {
+            bugReportPref.setOnPreferenceClickListener(pref -> {
+                Uri uri = Uri.parse(String.format("smsto:+%s", CREATOR_PHONE));
+                Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                intent.putExtra("sms_body", "Hey Brendan, fix your dang code.");
+                startActivity(intent);
                 return true;
             });
         }
