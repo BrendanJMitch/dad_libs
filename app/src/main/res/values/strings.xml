@@ -58,4 +58,5 @@
     <string name="about_changelog">Changelog</string>
     <string name="about_source">Source Code</string>
     <string name="about_bug_report">Report a Bug</string>
+    <string name="share">Share</string>
 </resources>

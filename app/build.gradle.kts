@@ -54,12 +54,12 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.common.jvm)
     implementation(libs.room.runtime.android)
-    implementation(libs.gson)
     implementation(libs.process.phoenix)
     implementation(libs.androidx.preference)
     implementation(libs.markwon.core)
     implementation(libs.markwon.ext.tables)
     implementation(libs.markwon.ext.strikethrough)
+    implementation(libs.moshi.moshi)
 
     annotationProcessor(libs.room.compiler)
 
