@@ -5,6 +5,7 @@
     <PreferenceCategory
         android:title="Import/Export Data"
         app:iconSpaceReserved="false">
+
         <androidx.preference.Preference
             android:key="export_database"
             android:summary="@string/export_database_description"
@@ -17,9 +18,18 @@
             android:title="@string/import_database"
             app:singleLineTitle="false"/>
 
+        <androidx.preference.Preference
+            android:key="import_item"
+            android:summary="@string/import_item_description"
+            android:title="@string/import_items"
+            app:singleLineTitle="false"
+            android:icon="@drawable/ic_import_item"/>
+
     </PreferenceCategory>
 
-
+    <Preference
+        android:enabled="false"
+        app:title="" />
 
     <PreferenceCategory
         android:title="About"
