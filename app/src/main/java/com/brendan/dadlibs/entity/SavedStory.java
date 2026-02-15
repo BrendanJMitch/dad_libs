@@ -23,7 +23,6 @@ public class SavedStory {
     public Long id;
     @NonNull
     public String name;
-    @NonNull
     public Long templateId;
     @NonNull
     public String text;
@@ -31,7 +30,7 @@ public class SavedStory {
     public Long timestamp;
     public Float rating;
 
-    public SavedStory(@NonNull String name, @NonNull Long templateId, @NonNull String text, Long timestamp, Float rating){
+    public SavedStory(@NonNull String name, Long templateId, @NonNull String text, Long timestamp, Float rating){
         this.name = name;
         this.templateId = templateId;
         this.text = text;

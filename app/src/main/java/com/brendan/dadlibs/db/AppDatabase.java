@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.brendan.dadlibs.builtins.PreLoader;
@@ -24,7 +25,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Word.class, WordList.class, SavedStory.class, Template.class, InflectedForm.class}, version = 1)
+@Database(
+        entities = {Word.class, WordList.class, SavedStory.class, Template.class, InflectedForm.class},
+        version = 2,
+        exportSchema = true)
 public abstract class AppDatabase extends RoomDatabase {
     public static final ExecutorService executor =
             Executors.newFixedThreadPool(4);
@@ -37,39 +41,60 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract InflectionDao inflectionDao();
     private static volatile AppDatabase INSTANCE;
 
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase db) {
+            db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `SavedStory_new` (" +
+                            "`id` INTEGER PRIMARY KEY," +
+                            "`name` TEXT NOT NULL," +
+                            "`templateId` INTEGER," +  // ← now nullable
+                            "`text` TEXT NOT NULL," +
+                            "`timestamp` INTEGER NOT NULL," +
+                            "`rating` REAL," +
+                            "FOREIGN KEY(`templateId`) REFERENCES `Template`(`id`) ON DELETE CASCADE" +
+                            ")");
+            db.execSQL(
+                    "INSERT INTO `SavedStory_new` (`id`, `name`, `templateId`, `text`, `timestamp`, `rating`) " +
+                            "SELECT `id`, `name`, `templateId`, `text`, `timestamp`, `rating` FROM `SavedStory`");
+            db.execSQL("DROP TABLE `SavedStory`");
+            db.execSQL("ALTER TABLE `SavedStory_new` RENAME TO `SavedStory`");
+            db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS `index_SavedStory_templateId` " +
+                            "ON `SavedStory` (`templateId`)");
+        }
+    };
 
     public static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(
-                            context.getApplicationContext(),
-                            AppDatabase.class, DB_FILENAME
-                    ).addCallback(new Callback() {
-                            @Override
-                            public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                                super.onCreate(db);
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_FILENAME)
+                            .addCallback(new Callback() {
+                                @Override
+                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                    super.onCreate(db);
 
-                                executor.execute(() -> {
-                                    List<Template> templates = PreLoader.loadTemplates(context);
-                                    INSTANCE.templateDao().insert(templates);
+                                    executor.execute(() -> {
+                                        List<Template> templates = PreLoader.loadTemplates(context);
+                                        INSTANCE.templateDao().insert(templates);
 
-                                    List<WordList> lists = PreLoader.loadWordLists(context);
-                                    INSTANCE.wordListDao().insert(lists);
+                                        List<WordList> lists = PreLoader.loadWordLists(context);
+                                        INSTANCE.wordListDao().insert(lists);
 
-                                    List<Word> words = PreLoader.loadWords(context);
-                                    INSTANCE.wordDao().insert(words);
+                                        List<Word> words = PreLoader.loadWords(context);
+                                        INSTANCE.wordDao().insert(words);
 
-                                    List<InflectedForm> inflectedForms = PreLoader.loadInflectedForms(context);
-                                    INSTANCE.inflectionDao().insert(inflectedForms);
+                                        List<InflectedForm> inflectedForms = PreLoader.loadInflectedForms(context);
+                                        INSTANCE.inflectionDao().insert(inflectedForms);
 
-                                    context.getSharedPreferences("app", Context.MODE_PRIVATE)
-                                            .edit()
-                                            .putBoolean("initialized", true)
-                                            .apply();
-                                });
-                            }
-                        }).build();
+                                        context.getSharedPreferences("app", Context.MODE_PRIVATE)
+                                                .edit()
+                                                .putBoolean("initialized", true)
+                                                .apply();
+                                    });
+                                }
+                        }).addMigrations(MIGRATION_1_2).build();
                 }
             }
         }

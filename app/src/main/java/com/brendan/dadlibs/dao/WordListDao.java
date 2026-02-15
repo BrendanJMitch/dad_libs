@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.brendan.dadlibs.entity.WordList;
@@ -31,6 +32,7 @@ public interface WordListDao {
     @Query("Select * FROM WordList w WHERE w.id = :id")
     WordList getById(long id);
 
+    @Transaction
     @Query("SELECT * FROM Word WHERE wordListId = :wordListId")
     List<WordWithInflections> getWordsWithInflections(long wordListId);
 
