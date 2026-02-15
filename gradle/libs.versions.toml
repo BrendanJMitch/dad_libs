@@ -15,7 +15,7 @@ navigationUi = "2.6.0"
 navigationFragmentVersion = "2.9.3"
 navigationUiVersion = "2.9.3"
 processPhoenix = "3.0.0"
-roomCommonJvm = "2.7.2"
+room = "2.7.2"
 roomRuntimeAndroid = "2.7.2"
 preference = "1.2.1"
 
@@ -37,12 +37,13 @@ navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version
 androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragmentVersion" }
 androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUiVersion" }
 process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "processPhoenix" }
-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCommonJvm" }
-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCommonJvm" }
+room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+room = { id = "androidx.room", version.ref = "room" }
 

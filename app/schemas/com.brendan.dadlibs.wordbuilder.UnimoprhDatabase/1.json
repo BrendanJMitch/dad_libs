@@ -1,0 +1,48 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "5d91d45871c3461e978e9f350fab7ce6",
+    "entities": [
+      {
+        "tableName": "UnimorphEntry",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `lemma` TEXT NOT NULL, `inflectedForm` TEXT NOT NULL, `modifiers` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "lemma",
+            "columnName": "lemma",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inflectedForm",
+            "columnName": "inflectedForm",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "modifiers",
+            "columnName": "modifiers",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5d91d45871c3461e978e9f350fab7ce6')"
+    ]
+  }
+}

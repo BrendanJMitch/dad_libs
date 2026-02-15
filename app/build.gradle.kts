@@ -2,6 +2,7 @@ import java.time.Year
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.room)
 }
 
 val buildYear = Year.now().value
@@ -38,6 +39,10 @@ android {
         viewBinding = true
         buildConfig = true
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
