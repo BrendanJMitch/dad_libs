@@ -32,12 +32,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.data.entity.Template;
+import com.brendan.dadlibs.data.entity.WordList;
 import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.engine.PartOfSpeech;
 import com.brendan.dadlibs.engine.Placeholder;
 import com.brendan.dadlibs.engine.Replacement;
-import com.brendan.dadlibs.entity.Template;
-import com.brendan.dadlibs.entity.WordList;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;

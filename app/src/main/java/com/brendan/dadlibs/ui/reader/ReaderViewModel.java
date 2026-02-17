@@ -6,15 +6,15 @@ import android.os.Looper;
 
 import androidx.lifecycle.AndroidViewModel;
 
-import com.brendan.dadlibs.dao.SavedStoryDao;
-import com.brendan.dadlibs.dao.TemplateDao;
-import com.brendan.dadlibs.dao.WordDao;
-import com.brendan.dadlibs.dao.WordListDao;
-import com.brendan.dadlibs.db.AppDatabase;
+import com.brendan.dadlibs.data.dao.SavedStoryDao;
+import com.brendan.dadlibs.data.dao.TemplateDao;
+import com.brendan.dadlibs.data.dao.WordDao;
+import com.brendan.dadlibs.data.dao.WordListDao;
+import com.brendan.dadlibs.data.db.AppDatabase;
+import com.brendan.dadlibs.data.entity.SavedStory;
+import com.brendan.dadlibs.data.entity.Template;
+import com.brendan.dadlibs.data.entity.WordList;
 import com.brendan.dadlibs.engine.DadLibEngine;
-import com.brendan.dadlibs.entity.SavedStory;
-import com.brendan.dadlibs.entity.Template;
-import com.brendan.dadlibs.entity.WordList;
 
 public class ReaderViewModel extends AndroidViewModel {
 

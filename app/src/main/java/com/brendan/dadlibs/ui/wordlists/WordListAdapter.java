@@ -5,13 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.WrapperListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.entity.WordList;
+import com.brendan.dadlibs.data.entity.WordList;
 
 import java.util.ArrayList;
 import java.util.List;

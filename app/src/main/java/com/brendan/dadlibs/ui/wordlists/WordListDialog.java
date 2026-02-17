@@ -10,8 +10,8 @@ import android.widget.AutoCompleteTextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.data.entity.WordList;
 import com.brendan.dadlibs.engine.PartOfSpeech;
-import com.brendan.dadlibs.entity.WordList;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 

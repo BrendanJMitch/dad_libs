@@ -1,7 +1,7 @@
 package com.brendan.dadlibs.builtins;
 
+import com.brendan.dadlibs.data.entity.WordList;
 import com.brendan.dadlibs.engine.PartOfSpeech;
-import com.brendan.dadlibs.entity.WordList;
 
 import java.util.List;
 

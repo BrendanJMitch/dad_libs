@@ -2,8 +2,8 @@ package com.brendan.dadlibs;
 
 import static org.junit.Assert.assertTrue;
 
+import com.brendan.dadlibs.data.entity.WordList;
 import com.brendan.dadlibs.engine.Inflection;
-import com.brendan.dadlibs.entity.WordList;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

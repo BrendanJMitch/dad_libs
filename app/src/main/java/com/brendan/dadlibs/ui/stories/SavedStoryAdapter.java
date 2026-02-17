@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.entity.SavedStory;
+import com.brendan.dadlibs.data.entity.SavedStory;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;

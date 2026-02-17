@@ -1,14 +1,15 @@
-package com.brendan.dadlibs.dao;
+package com.brendan.dadlibs.data.relation;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import com.brendan.dadlibs.entity.InflectedForm;
-import com.brendan.dadlibs.entity.Word;
+import com.brendan.dadlibs.data.entity.InflectedForm;
+import com.brendan.dadlibs.data.entity.Word;
 
 import java.util.List;
 
-public class WordWithInflections {
+public class WordWithInflectedForms {
+
     @Embedded
     public Word word;
 

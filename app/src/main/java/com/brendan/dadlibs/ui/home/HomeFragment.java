@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.entity.Template;
+import com.brendan.dadlibs.data.entity.Template;
 import com.brendan.dadlibs.share.ShareCacheHelper;
 import com.brendan.dadlibs.share.ShareJson;
 import com.brendan.dadlibs.share.ShareMapping;

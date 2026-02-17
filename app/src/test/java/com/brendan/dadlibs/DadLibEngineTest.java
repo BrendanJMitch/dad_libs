@@ -5,11 +5,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
+import com.brendan.dadlibs.data.entity.SavedStory;
+import com.brendan.dadlibs.data.entity.Template;
+import com.brendan.dadlibs.data.entity.Word;
+import com.brendan.dadlibs.data.entity.WordList;
 import com.brendan.dadlibs.engine.DadLibEngine;
-import com.brendan.dadlibs.entity.SavedStory;
-import com.brendan.dadlibs.entity.Template;
-import com.brendan.dadlibs.entity.Word;
-import com.brendan.dadlibs.entity.WordList;
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -2,7 +2,7 @@ package com.brendan.dadlibs.builtins;
 
 import static java.util.Map.entry;
 
-import com.brendan.dadlibs.entity.Word;
+import com.brendan.dadlibs.data.entity.Word;
 
 import java.util.ArrayList;
 import java.util.List;

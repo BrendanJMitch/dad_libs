@@ -1,6 +1,6 @@
 package com.brendan.dadlibs.builtins;
 
-import com.brendan.dadlibs.entity.Template;
+import com.brendan.dadlibs.data.entity.Template;
 
 import java.util.List;
 

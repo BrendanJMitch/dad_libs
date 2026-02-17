@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.brendan.dadlibs.BuildConfig;
-import com.brendan.dadlibs.db.AppDatabase;
+import com.brendan.dadlibs.data.db.AppDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;

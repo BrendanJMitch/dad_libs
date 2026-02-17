@@ -1,13 +1,12 @@
-package com.brendan.dadlibs.dao;
+package com.brendan.dadlibs.data.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
-import com.brendan.dadlibs.entity.Template;
+import com.brendan.dadlibs.data.entity.Template;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.entity.Word;
+import com.brendan.dadlibs.data.entity.Word;
 
 public class EditWordDialog extends WordDialog {
 

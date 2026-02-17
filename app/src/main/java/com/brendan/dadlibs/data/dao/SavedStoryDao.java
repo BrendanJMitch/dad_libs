@@ -1,4 +1,4 @@
-package com.brendan.dadlibs.dao;
+package com.brendan.dadlibs.data.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.brendan.dadlibs.entity.SavedStory;
+import com.brendan.dadlibs.data.entity.SavedStory;
 
 import java.util.List;
 

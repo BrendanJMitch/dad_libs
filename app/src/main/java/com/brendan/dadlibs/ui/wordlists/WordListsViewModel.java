@@ -6,13 +6,13 @@ import android.os.Looper;
 
 import androidx.lifecycle.AndroidViewModel;
 
-import com.brendan.dadlibs.dao.InflectionDao;
-import com.brendan.dadlibs.dao.WordDao;
-import com.brendan.dadlibs.dao.WordListDao;
-import com.brendan.dadlibs.db.AppDatabase;
-import com.brendan.dadlibs.engine.Inflection;
-import com.brendan.dadlibs.entity.Word;
-import com.brendan.dadlibs.entity.WordList;
+import com.brendan.dadlibs.data.dao.InflectionDao;
+import com.brendan.dadlibs.data.dao.WordDao;
+import com.brendan.dadlibs.data.dao.WordListDao;
+import com.brendan.dadlibs.data.db.AppDatabase;
+import com.brendan.dadlibs.data.entity.Word;
+import com.brendan.dadlibs.data.entity.WordList;
+import com.brendan.dadlibs.data.relation.WordListWithWords;
 import com.brendan.dadlibs.repository.WordListRepository;
 
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class WordListsViewModel extends AndroidViewModel {
 
@@ -73,6 +74,13 @@ public class WordListsViewModel extends AndroidViewModel {
             this.wordsByListId.put(newId, new ArrayList<>());
             List<WordList> wordLists = wordListDao.getAll();
             new Handler(Looper.getMainLooper()).post(() -> callback.onLoaded(wordLists));
+        });
+    }
+
+    public void getWordListWithWords(Long wordListId, Consumer<WordListWithWords> callback) {
+        AppDatabase.executor.execute(() -> {
+            WordListWithWords list = wordListDao.getWordListWithWords(wordListId);
+            new Handler(Looper.getMainLooper()).post(() -> callback.accept(list));
         });
     }
 

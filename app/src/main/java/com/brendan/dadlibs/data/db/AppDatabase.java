@@ -1,4 +1,4 @@
-package com.brendan.dadlibs.db;
+package com.brendan.dadlibs.data.db;
 
 import android.content.Context;
 
@@ -10,16 +10,16 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.brendan.dadlibs.builtins.PreLoader;
-import com.brendan.dadlibs.dao.InflectionDao;
-import com.brendan.dadlibs.dao.SavedStoryDao;
-import com.brendan.dadlibs.dao.TemplateDao;
-import com.brendan.dadlibs.dao.WordDao;
-import com.brendan.dadlibs.dao.WordListDao;
-import com.brendan.dadlibs.entity.InflectedForm;
-import com.brendan.dadlibs.entity.SavedStory;
-import com.brendan.dadlibs.entity.Template;
-import com.brendan.dadlibs.entity.Word;
-import com.brendan.dadlibs.entity.WordList;
+import com.brendan.dadlibs.data.dao.InflectionDao;
+import com.brendan.dadlibs.data.dao.SavedStoryDao;
+import com.brendan.dadlibs.data.dao.TemplateDao;
+import com.brendan.dadlibs.data.dao.WordDao;
+import com.brendan.dadlibs.data.dao.WordListDao;
+import com.brendan.dadlibs.data.entity.InflectedForm;
+import com.brendan.dadlibs.data.entity.SavedStory;
+import com.brendan.dadlibs.data.entity.Template;
+import com.brendan.dadlibs.data.entity.Word;
+import com.brendan.dadlibs.data.entity.WordList;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

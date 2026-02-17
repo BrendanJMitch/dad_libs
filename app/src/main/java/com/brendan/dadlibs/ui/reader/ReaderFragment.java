@@ -12,9 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.entity.SavedStory;
-
-import java.util.function.Consumer;
 
 public class ReaderFragment extends Fragment {
 

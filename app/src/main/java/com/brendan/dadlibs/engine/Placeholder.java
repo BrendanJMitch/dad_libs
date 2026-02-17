@@ -1,6 +1,6 @@
 package com.brendan.dadlibs.engine;
 
-import com.brendan.dadlibs.entity.WordList;
+import com.brendan.dadlibs.data.entity.WordList;
 
 public class Placeholder {
     public final WordList wordList;

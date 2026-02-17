@@ -6,8 +6,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.brendan.dadlibs.db.AppDatabase;
-import com.brendan.dadlibs.entity.UnimorphEntry;
+import com.brendan.dadlibs.data.db.AppDatabase;
+import com.brendan.dadlibs.data.entity.UnimorphEntry;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

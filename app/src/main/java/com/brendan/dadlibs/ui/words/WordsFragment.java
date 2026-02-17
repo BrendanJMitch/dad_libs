@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.data.entity.Word;
 import com.brendan.dadlibs.engine.Inflection;
-import com.brendan.dadlibs.entity.Word;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;

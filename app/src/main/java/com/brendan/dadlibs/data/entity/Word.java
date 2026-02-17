@@ -1,4 +1,4 @@
-package com.brendan.dadlibs.entity;
+package com.brendan.dadlibs.data.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

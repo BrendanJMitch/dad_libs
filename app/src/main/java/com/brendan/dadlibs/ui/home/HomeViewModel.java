@@ -3,22 +3,16 @@ package com.brendan.dadlibs.ui.home;
 import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.util.Pair;
 
 import androidx.lifecycle.AndroidViewModel;
 
-import com.brendan.dadlibs.dao.TemplateDao;
-import com.brendan.dadlibs.db.AppDatabase;
+import com.brendan.dadlibs.data.dao.TemplateDao;
+import com.brendan.dadlibs.data.db.AppDatabase;
+import com.brendan.dadlibs.data.entity.Template;
 import com.brendan.dadlibs.engine.DadLibEngine;
-import com.brendan.dadlibs.engine.Replacement;
-import com.brendan.dadlibs.entity.Template;
-import com.brendan.dadlibs.ui.editor.PlaceholderSpan;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 
 public class HomeViewModel extends AndroidViewModel {
 

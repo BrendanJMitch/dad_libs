@@ -8,7 +8,7 @@ import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.entity.SavedStory;
+import com.brendan.dadlibs.data.entity.SavedStory;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 

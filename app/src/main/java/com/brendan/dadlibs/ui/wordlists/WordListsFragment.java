@@ -1,15 +1,20 @@
 package com.brendan.dadlibs.ui.wordlists;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -17,10 +22,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.data.entity.WordList;
+import com.brendan.dadlibs.data.relation.WordListWithWords;
 import com.brendan.dadlibs.engine.PartOfSpeech;
-import com.brendan.dadlibs.entity.WordList;
+import com.brendan.dadlibs.share.ShareCacheHelper;
+import com.brendan.dadlibs.share.ShareJson;
+import com.brendan.dadlibs.share.ShareMapping;
+import com.brendan.dadlibs.share.SharePayload;
+import com.brendan.dadlibs.share.WordListDto;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class WordListsFragment extends Fragment {
@@ -97,6 +110,10 @@ public class WordListsFragment extends Fragment {
                 copyWordList(wordList);
                 return true;
             }
+            if (item.getItemId() == R.id.menu_share) {
+                viewModel.getWordListWithWords(wordList.id, this::shareWordList);
+                return true;
+            }
             return false;
         });
         popup.show();
@@ -119,6 +136,34 @@ public class WordListsFragment extends Fragment {
                 String.format("%s (copy)", wordList.name),
                 String.format("%s (copy)", wordList.singularName),
                 this::onWordListsLoaded);
+    }
+
+    private void shareWordList(WordListWithWords wordList){
+        WordListDto dto = ShareMapping.getWordListDto(wordList);
+        SharePayload payload = new SharePayload(null, List.of(dto), null);
+        String json = ShareJson.toJson(payload);
+        Context context = requireContext();
+
+        File jsonFile;
+        try {
+            jsonFile = ShareCacheHelper.writeShareFile(context, wordList.wordList.name, json);
+        } catch (IOException e) {
+            Toast.makeText(context, "Unable to export. Try again?", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Uri uri = FileProvider.getUriForFile(
+                context,
+                context.getPackageName() + ".fileprovider",
+                jsonFile);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("application/json");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        context.startActivity(
+                Intent.createChooser(intent, "Share Word Lists"));
     }
 
     private void deleteWordList(WordList wordList) {

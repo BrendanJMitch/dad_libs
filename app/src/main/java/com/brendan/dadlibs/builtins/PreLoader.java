@@ -2,12 +2,12 @@ package com.brendan.dadlibs.builtins;
 
 import android.content.Context;
 
+import com.brendan.dadlibs.data.entity.InflectedForm;
+import com.brendan.dadlibs.data.entity.Template;
+import com.brendan.dadlibs.data.entity.Word;
+import com.brendan.dadlibs.data.entity.WordList;
 import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.engine.PartOfSpeech;
-import com.brendan.dadlibs.entity.InflectedForm;
-import com.brendan.dadlibs.entity.Template;
-import com.brendan.dadlibs.entity.Word;
-import com.brendan.dadlibs.entity.WordList;
 import com.brendan.dadlibs.wordbuilder.BuilderProvider;
 import com.brendan.dadlibs.wordbuilder.WordBuilder;
 

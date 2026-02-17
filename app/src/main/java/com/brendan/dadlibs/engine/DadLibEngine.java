@@ -2,10 +2,10 @@ package com.brendan.dadlibs.engine;
 
 import android.util.Pair;
 
-import com.brendan.dadlibs.entity.SavedStory;
-import com.brendan.dadlibs.entity.Template;
-import com.brendan.dadlibs.entity.Word;
-import com.brendan.dadlibs.entity.WordList;
+import com.brendan.dadlibs.data.entity.SavedStory;
+import com.brendan.dadlibs.data.entity.Template;
+import com.brendan.dadlibs.data.entity.Word;
+import com.brendan.dadlibs.data.entity.WordList;
 
 import java.util.ArrayList;
 import java.util.Collections;

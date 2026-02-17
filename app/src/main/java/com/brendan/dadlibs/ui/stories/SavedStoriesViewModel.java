@@ -7,9 +7,9 @@ import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.brendan.dadlibs.dao.SavedStoryDao;
-import com.brendan.dadlibs.db.AppDatabase;
-import com.brendan.dadlibs.entity.SavedStory;
+import com.brendan.dadlibs.data.dao.SavedStoryDao;
+import com.brendan.dadlibs.data.db.AppDatabase;
+import com.brendan.dadlibs.data.entity.SavedStory;
 
 import java.util.List;
 import java.util.function.Consumer;

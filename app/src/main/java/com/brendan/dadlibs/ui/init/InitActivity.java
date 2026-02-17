@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.db.AppDatabase;
+import com.brendan.dadlibs.data.db.AppDatabase;
 import com.brendan.dadlibs.ui.main.MainActivity;
 
 public class InitActivity extends AppCompatActivity {

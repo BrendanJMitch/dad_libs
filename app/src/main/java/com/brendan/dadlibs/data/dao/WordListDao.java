@@ -1,4 +1,4 @@
-package com.brendan.dadlibs.dao;
+package com.brendan.dadlibs.data.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -8,7 +8,8 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.brendan.dadlibs.entity.WordList;
+import com.brendan.dadlibs.data.entity.WordList;
+import com.brendan.dadlibs.data.relation.WordListWithWords;
 
 import java.util.List;
 
@@ -33,7 +34,8 @@ public interface WordListDao {
     WordList getById(long id);
 
     @Transaction
-    @Query("SELECT * FROM Word WHERE wordListId = :wordListId")
-    List<WordWithInflections> getWordsWithInflections(long wordListId);
+    @Query("SELECT * FROM WordList WHERE id = :id")
+    WordListWithWords getWordListWithWords(long id);
+
 
 }

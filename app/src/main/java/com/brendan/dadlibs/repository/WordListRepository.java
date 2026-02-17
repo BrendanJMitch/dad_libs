@@ -2,18 +2,16 @@ package com.brendan.dadlibs.repository;
 
 import androidx.room.Transaction;
 
-import com.brendan.dadlibs.dao.InflectionDao;
-import com.brendan.dadlibs.dao.WordDao;
-import com.brendan.dadlibs.dao.WordListDao;
-import com.brendan.dadlibs.dao.WordWithInflections;
-import com.brendan.dadlibs.entity.InflectedForm;
-import com.brendan.dadlibs.entity.Word;
-import com.brendan.dadlibs.entity.WordList;
+import com.brendan.dadlibs.data.dao.InflectionDao;
+import com.brendan.dadlibs.data.dao.WordDao;
+import com.brendan.dadlibs.data.dao.WordListDao;
+import com.brendan.dadlibs.data.entity.InflectedForm;
+import com.brendan.dadlibs.data.entity.Word;
+import com.brendan.dadlibs.data.entity.WordList;
+import com.brendan.dadlibs.data.relation.WordWithInflectedForms;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class WordListRepository {
 
@@ -32,10 +30,10 @@ public class WordListRepository {
         WordList newList = new WordList(name, singularName, false, original.partOfSpeech);
         long newWordListId = wordListDao.insert(newList);
 
-        List<WordWithInflections> wordsWithInflections =
-                wordListDao.getWordsWithInflections(original.id);
+        List<WordWithInflectedForms> wordsWithInflections =
+                wordListDao.getWordListWithWords(original.id).words;
         List<Word> newWords = new ArrayList<>();
-        for (WordWithInflections w : wordsWithInflections) {
+        for (WordWithInflectedForms w : wordsWithInflections) {
             Word copy = w.word;
             copy.id = null;
             copy.wordListId = newWordListId;

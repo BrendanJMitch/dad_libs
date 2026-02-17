@@ -3,19 +3,18 @@ package com.brendan.dadlibs.ui.words;
 import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 
-import com.brendan.dadlibs.dao.InflectionDao;
-import com.brendan.dadlibs.dao.WordDao;
-import com.brendan.dadlibs.dao.WordListDao;
-import com.brendan.dadlibs.db.AppDatabase;
+import com.brendan.dadlibs.data.dao.InflectionDao;
+import com.brendan.dadlibs.data.dao.WordDao;
+import com.brendan.dadlibs.data.dao.WordListDao;
+import com.brendan.dadlibs.data.db.AppDatabase;
+import com.brendan.dadlibs.data.entity.InflectedForm;
+import com.brendan.dadlibs.data.entity.Word;
+import com.brendan.dadlibs.data.entity.WordList;
 import com.brendan.dadlibs.engine.Inflection;
 import com.brendan.dadlibs.engine.PartOfSpeech;
-import com.brendan.dadlibs.entity.InflectedForm;
-import com.brendan.dadlibs.entity.Word;
-import com.brendan.dadlibs.entity.WordList;
 import com.brendan.dadlibs.wordbuilder.BuilderProvider;
 import com.brendan.dadlibs.wordbuilder.UnimoprhDatabase;
 import com.brendan.dadlibs.wordbuilder.WordBuilder;

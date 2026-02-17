@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.brendan.dadlibs.R;
-import com.brendan.dadlibs.entity.Word;
+import com.brendan.dadlibs.data.entity.Word;
 
 import java.util.ArrayList;
 import java.util.List;
