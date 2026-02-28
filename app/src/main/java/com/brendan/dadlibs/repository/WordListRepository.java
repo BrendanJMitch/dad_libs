@@ -8,6 +8,7 @@ import com.brendan.dadlibs.data.dao.WordListDao;
 import com.brendan.dadlibs.data.entity.InflectedForm;
 import com.brendan.dadlibs.data.entity.Word;
 import com.brendan.dadlibs.data.entity.WordList;
+import com.brendan.dadlibs.data.relation.WordListWithWords;
 import com.brendan.dadlibs.data.relation.WordWithInflectedForms;
 
 import java.util.ArrayList;
@@ -51,5 +52,21 @@ public class WordListRepository {
 
         inflectionDao.insert(newInflections);
         return newWordListId;
+    }
+
+    @Transaction
+    public void insertWordListWithWords(WordListWithWords list) {
+        long wordListId = wordListDao.insert(list.wordList);
+
+        for (WordWithInflectedForms wordGraph : list.words) {
+
+            wordGraph.word.wordListId = wordListId;
+            long wordId = wordDao.insert(wordGraph.word);
+
+            for (InflectedForm form : wordGraph.inflectedForms) {
+                form.wordId = wordId;
+            }
+            inflectionDao.insert(wordGraph.inflectedForms);
+        }
     }
 }

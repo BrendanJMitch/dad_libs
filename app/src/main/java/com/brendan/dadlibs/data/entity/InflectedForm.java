@@ -3,6 +3,7 @@ package com.brendan.dadlibs.data.entity;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 
 @Entity(primaryKeys = {"wordId", "type"},
         foreignKeys = @ForeignKey(
@@ -23,6 +24,11 @@ public class InflectedForm {
         this.wordId = wordId;
         this.type = type;
         this.inflectedForm = inflectedForm;
+    }
+
+    @Ignore
+    public InflectedForm(@NonNull String type, @NonNull String inflectedForm){
+        this(null, type, inflectedForm);
     }
 
 }

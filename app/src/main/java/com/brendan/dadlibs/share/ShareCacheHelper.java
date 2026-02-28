@@ -9,8 +9,8 @@ import java.io.IOException;
 public class ShareCacheHelper {
 
     public static File writeShareFile(Context context, String filename, String json) throws IOException {
-        if (!filename.toLowerCase().endsWith(".json"))
-            filename = filename + ".json";
+        if (!filename.toLowerCase().endsWith(".dlshare"))
+            filename = filename + ".dlshare";
         File cacheDir = context.getCacheDir();
         File file = new File(cacheDir, filename);
 

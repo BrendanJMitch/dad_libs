@@ -22,8 +22,18 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.DadLibs.NoActionBar" />
+            android:exported="true"
+            android:theme="@style/Theme.DadLibs.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:mimeType="application/vnd.dadlibs.item+json" />
+                <data
+                    android:mimeType="application/octet-stream" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.init.InitActivity"

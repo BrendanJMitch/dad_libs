@@ -158,7 +158,7 @@ public class WordListsFragment extends Fragment {
                 jsonFile);
 
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("application/json");
+        intent.setType("application/vnd.dadlibs.item+json");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 

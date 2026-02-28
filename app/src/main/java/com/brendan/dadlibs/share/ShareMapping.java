@@ -3,6 +3,8 @@ package com.brendan.dadlibs.share;
 import com.brendan.dadlibs.data.entity.InflectedForm;
 import com.brendan.dadlibs.data.entity.SavedStory;
 import com.brendan.dadlibs.data.entity.Template;
+import com.brendan.dadlibs.data.entity.Word;
+import com.brendan.dadlibs.data.entity.WordList;
 import com.brendan.dadlibs.data.relation.WordListWithWords;
 import com.brendan.dadlibs.data.relation.WordWithInflectedForms;
 
@@ -43,6 +45,46 @@ public final class ShareMapping {
                 dto.text,
                 dto.timestamp,
                 dto.rating);
+    }
+
+    public static WordList getWordListEntity(WordListDto dto){
+        return new WordList(
+                dto.name,
+                dto.singularName,
+                false,
+                dto.marker,
+                dto.partOfSpeech);
+    }
+
+    public static Word getWordEntity(WordDto dto){
+        return new Word(dto.word, null);
+    }
+
+    public static InflectedForm getInflectedFormEntity(InflectedFormDto dto){
+        return new InflectedForm(
+                dto.type,
+                dto.inflectedForm
+        );
+    }
+
+    public static WordWithInflectedForms getWordWithInflectedForms(WordDto dto){
+        WordWithInflectedForms word = new WordWithInflectedForms();
+        word.word = getWordEntity(dto);
+        word.inflectedForms = new ArrayList<>();
+        for (InflectedFormDto inflectedForm : dto.inflectedForms){
+            word.inflectedForms.add(getInflectedFormEntity(inflectedForm));
+        }
+        return word;
+    }
+
+    public static WordListWithWords getWordListWithWords(WordListDto dto){
+        WordListWithWords list = new WordListWithWords();
+        list.wordList = getWordListEntity(dto);
+        list.words = new ArrayList<>();
+        for (WordDto word : dto.words){
+            list.words.add(getWordWithInflectedForms(word));
+        }
+        return list;
     }
 
     public static InflectedFormDto getInflectedFormDto(InflectedForm form) {

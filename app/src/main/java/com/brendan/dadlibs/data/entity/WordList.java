@@ -46,6 +46,16 @@ public class WordList {
         this.singularName = singularName;
     }
 
+    @Ignore
+    public WordList(@NonNull String name, @NonNull String singularName, @NonNull Boolean isBuiltin,
+                    @NonNull String marker, String partOfSpeech){
+        this.name = name;
+        this.partOfSpeech = partOfSpeech;
+        this.isBuiltin = isBuiltin;
+        this.marker = marker;
+        this.singularName = singularName;
+    }
+
     public String getMarkerString(int index, Inflection inflection){
         return String.format(Locale.US, "${%s %d %s}", marker, index, inflection.getLabel());
     }

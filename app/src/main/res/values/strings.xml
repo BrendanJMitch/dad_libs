@@ -59,4 +59,8 @@
     <string name="about_source">Source Code</string>
     <string name="about_bug_report">Report a Bug</string>
     <string name="share">Share</string>
+    <string name="bullet_text">• %s</string>
+    <string name="import_prompt">\"Import %d item%s into your library?\"</string>
+    <string name="invalid_data_text">\"Invalid data; did you choose the correct file?\"</string>
+    <string name="failed_import_text">\"Failed to import data\"</string>
 </resources>

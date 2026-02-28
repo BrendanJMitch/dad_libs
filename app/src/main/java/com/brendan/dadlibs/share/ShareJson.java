@@ -1,6 +1,7 @@
 package com.brendan.dadlibs.share;
 
 import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.JsonDataException;
 import com.squareup.moshi.Moshi;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class ShareJson {
         return adapter.toJson(payload);
     }
 
-    public static SharePayload fromJson(String json) throws IOException {
+    public static SharePayload fromJson(String json) throws IOException, JsonDataException {
         return adapter.fromJson(json);
     }
 }
