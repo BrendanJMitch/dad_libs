@@ -38,7 +38,7 @@ public class ImportHelper {
         }
     }
 
-    public static void performImport(Context context, SharePayload payload) {
+    public static void performImport(Context context, SharePayload payload, Runnable uiCallback) {
         AppDatabase.executor.execute(() -> {
 
             AppDatabase db = AppDatabase.getDatabase(context);
@@ -67,11 +67,14 @@ public class ImportHelper {
                 }
             });
 
-            ((AppCompatActivity) context).runOnUiThread(() ->
-                    Toast.makeText(context,
-                            "Import successful",
-                            Toast.LENGTH_LONG).show()
-            );
+            ((AppCompatActivity) context).runOnUiThread(() -> {
+                Toast.makeText(context, "Import successful", Toast.LENGTH_LONG).show();
+                uiCallback.run();
+            });
         });
+    }
+
+    public static void performImport(Context context, SharePayload payload){
+        performImport(context, payload, () -> {});
     }
 }
