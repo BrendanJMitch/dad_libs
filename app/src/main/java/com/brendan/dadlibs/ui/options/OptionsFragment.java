@@ -1,5 +1,6 @@
 package com.brendan.dadlibs.ui.options;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,8 +16,13 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.brendan.dadlibs.BuildConfig;
 import com.brendan.dadlibs.R;
+import com.brendan.dadlibs.share.ImportHelper;
+import com.brendan.dadlibs.share.SharePayload;
+import com.brendan.dadlibs.ui.sharing.ImportDialog;
 import com.jakewharton.processphoenix.ProcessPhoenix;
+import com.squareup.moshi.JsonDataException;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -25,6 +31,7 @@ public class OptionsFragment extends PreferenceFragmentCompat {
 
     private ActivityResultLauncher<String> exportDbLauncher;
     private ActivityResultLauncher<String[]> importDbLauncher;
+    private ActivityResultLauncher<String[]> importItemsLauncher;
     private ImportExportViewModel viewModel;
     private static final String SOURCE_LOCATION = "https://github.com/BrendanJMitch/dad_libs";
     private static final String CREATOR_PHONE = "15095544135";
@@ -47,28 +54,42 @@ public class OptionsFragment extends PreferenceFragmentCompat {
                         viewModel.importDatabaseFromUri(
                                 uri, this::handleInvalidDb, this::handleError, this::handleFutureVersion, this::handleSuccessfulImport);
                     }
-                }
-        );
+                });
+        importItemsLauncher = registerForActivityResult(
+                new ActivityResultContracts.OpenDocument(),
+                uri -> {
+                    if (uri != null) {
+                        importItems(uri);
+                    }
+                });
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.options, rootKey);
 
-        Preference importPref = findPreference("import_database");
-        if (importPref != null) {
-            importPref.setOnPreferenceClickListener(pref -> {
+        Preference importDbPref = findPreference("import_database");
+        if (importDbPref != null) {
+            importDbPref.setOnPreferenceClickListener(pref -> {
                 promptImportDatabase();
                 return true;
             });
         }
 
-        Preference exportPref = findPreference("export_database");
-        if (exportPref != null) {
-            exportPref.setOnPreferenceClickListener(pref -> {
+        Preference exportDbPref = findPreference("export_database");
+        if (exportDbPref != null) {
+            exportDbPref.setOnPreferenceClickListener(pref -> {
                 String dateString = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
                         .format(new Date());
                 exportDbLauncher.launch(String.format("dadlibs_%s.zip", dateString));
+                return true;
+            });
+        }
+
+        Preference importItemPref = findPreference("import_item");
+        if (importItemPref != null) {
+            importItemPref.setOnPreferenceClickListener(pref -> {
+                importItemsLauncher.launch(new String[] {"application/octet-stream", "application/vnd.dadlibs.item+json"});
                 return true;
             });
         }
@@ -121,6 +142,20 @@ public class OptionsFragment extends PreferenceFragmentCompat {
                 startActivity(intent);
                 return true;
             });
+        }
+    }
+
+    private void importItems(Uri uri){
+        Context context = requireContext();
+        if (uri != null) {
+            try {
+                SharePayload payload = ImportHelper.getPayloadFromUri(context, uri);
+                new ImportDialog(context, payload).show(() -> ImportHelper.performImport(context, payload));
+            } catch (IOException e) {
+                Toast.makeText(context, getString(R.string.failed_import_text), Toast.LENGTH_LONG).show();
+            } catch (JsonDataException e) {
+                Toast.makeText(context, getString(R.string.invalid_data_text), Toast.LENGTH_LONG).show();
+            }
         }
     }
 

@@ -3,7 +3,6 @@ package com.brendan.dadlibs.ui.main;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             Uri uri = intent.getData();
             if (uri != null) {
-                String mimeType = this.getContentResolver().getType(uri);
-                Log.d("MIME", "Type = " + mimeType);
                 try {
                     SharePayload payload = ImportHelper.getPayloadFromUri(this, uri);
                     showImportPromptDialog(payload);
